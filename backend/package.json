@@ -1,23 +1,32 @@
 {
-  "name": "backend",
+  "name": "trackher-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "trackHER - Women's Health Tracker Backend",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node --project tsconfig.json src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "women",
+    "health",
+    "cycle",
+    "period",
+    "tracking"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
-    "@types/node": "^25.3.5",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.2.2"
   }
 }
