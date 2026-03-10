@@ -1,274 +1,279 @@
 import { Router, Request, Response } from 'express';
-import { makePrediction } from '../models/cycleModel';
-import { storePrediction, getPredictions } from '../data/storage';
+import { Pool } from 'pg';
+import { spawn } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { authMiddleware, AuthRequest } from '../middleware/auth';
 
-export const predictionsRouter = Router();
+// Fix __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-interface PredictionInput {
-  lastPeriodDate: string;
-  cycleLength: number;
-  periodDuration: number;
-  flowIntensity: number;
-  stressLevel: number;
-  sleepHours: number;
-  exerciseDays: number;
-  age: number;
+const pool = new Pool({
+  host: 'localhost',
+  port: 5432,
+  database: 'trackher_db',
+  user: 'trackher_user',
+  password: '12345678',
+});
+
+const router = Router();
+
+// Call Python script for ML predictions
+function predictWithML(input: any): Promise<any> {
+  return new Promise((resolve, reject) => {
+    try {
+      // Fix path to point to backend root, then to predict.py
+      const pythonScript = path.join(__dirname, '..', '..', 'predict.py');
+      console.log('Python script path:', pythonScript);
+      
+      // Use 'py' for Windows, 'python' for Mac/Linux
+      const pythonCommand = process.platform === 'win32' ? 'py' : 'python';
+      console.log('Using Python command:', pythonCommand);
+      
+      const python = spawn(pythonCommand, [pythonScript, JSON.stringify(input)], {
+        timeout: 30000, // 30 second timeout
+      });
+
+      let output = '';
+      let error = '';
+
+      python.stdout.on('data', (data) => {
+        output += data.toString();
+      });
+
+      python.stderr.on('data', (data) => {
+        error += data.toString();
+      });
+
+      python.on('close', (code) => {
+        console.log(`Python script exited with code ${code}`);
+        if (error) console.log('Python stderr:', error);
+        
+        if (code === 0 && output) {
+          try {
+            const result = JSON.parse(output.trim());
+            console.log('ML prediction result:', result);
+            resolve(result);
+          } catch (e) {
+            console.error('Failed to parse Python output:', output);
+            reject(new Error(`Failed to parse ML predictions: ${output}`));
+          }
+        } else {
+          reject(new Error(`Python script failed with code ${code}: ${error}`));
+        }
+      });
+
+      python.on('error', (err) => {
+        console.error('Failed to spawn Python process:', err);
+        reject(new Error(`Python spawn error: ${err.message}`));
+      });
+    } catch (err) {
+      console.error('Error in predictWithML:', err);
+      reject(err);
+    }
+  });
 }
 
-interface PredictionResponse {
-  success: boolean;
-  message?: string;
-  data?: {
-    nextPeriodDate: string;
-    ovulationDate: string;
-    currentCycleDay: number;
-    daysUntilNextPeriod: number;
-    daysUntilOvulation: number;
-    predictions: {
-      nextPeriodDays: number;
-      ovulationDay: number;
-      pmsLikelihood: number;
-      confidence: {
-        periodConfidence: number;
-        ovulationConfidence: number;
-        pmsConfidence: number;
-      };
-    };
-    fertility: {
-      fertileWindowStart: string;
-      fertileWindowEnd: string;
-      isPeakFertility: boolean;
-    };
-    recommendations: string[];
-  };
-}
-
-// POST /api/predict
-predictionsRouter.post('/predict', async (req: Request, res: Response) => {
+// POST /api/predict - Save prediction using ML
+router.post('/predict', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
-    const input: PredictionInput = req.body;
+    const userId = req.userId;
+    const input = req.body;
 
-    // ✅ Validate input
-    const validation = validateInput(input);
-    if (!validation.valid) {
+    console.log('Received prediction input:', input);
+
+    // Validate required fields
+    if (!input.lastPeriodDate || !input.cycleLength) {
       return res.status(400).json({
         success: false,
-        message: validation.errors.join(', ')
+        message: 'Missing required fields: lastPeriodDate and cycleLength required',
       });
     }
 
-    // ✅ Parse dates
-    const lastPeriodDate = new Date(input.lastPeriodDate);
-    const today = new Date();
+    // Get ML predictions
+    console.log('Calling ML model...');
+    const mlResult = await predictWithML(input);
 
-    // ✅ Calculate days since last period
-    const daysSince = Math.floor((today.getTime() - lastPeriodDate.getTime()) / (1000 * 60 * 60 * 24));
+    if (!mlResult.success) {
+      console.error('ML prediction failed:', mlResult.error);
+      return res.status(500).json({
+        success: false,
+        message: 'ML prediction failed: ' + mlResult.error,
+      });
+    }
 
-    // ✅ Calculate cycle day
-    const currentCycleDay = (daysSince % input.cycleLength) + 1;
+    const prediction = mlResult.predictions;
 
-    // ✅ Load models and make prediction
-    const prediction = await makePrediction({
-      daysSincePeriod: daysSince,
-      cycleLength: input.cycleLength,
-      periodDuration: input.periodDuration,
-      flowIntensity: input.flowIntensity,
-      stressLevel: input.stressLevel,
-      sleepHours: input.sleepHours,
-      exerciseDays: input.exerciseDays,
-      age: input.age,
-      cycleDay: currentCycleDay
-    });
+    // Save to database
+    const result = await pool.query(
+      `INSERT INTO predictions (
+        userId, lastPeriodDate, cycleLength, periodDuration, flowIntensity,
+        stressLevel, sleepHours, exerciseDays, moodLevel, energyLevel,
+        nextPeriodDate, ovulationDate, currentCycleDay, pmsLikelihood
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
+      ) RETURNING *`,
+      [
+        userId,
+        input.lastPeriodDate,
+        input.cycleLength,
+        input.periodDuration,
+        input.flowIntensity,
+        input.stressLevel,
+        input.sleepHours,
+        input.exerciseDays,
+        input.moodLevel || 7,
+        input.energyLevel || 6,
+        prediction.nextPeriodDate,
+        prediction.ovulationDate,
+        prediction.currentCycleDay,
+        prediction.pmsLikelihood,
+      ]
+    );
 
-    // ✅ Calculate actual dates
-    const nextPeriodDate = new Date(lastPeriodDate);
-    nextPeriodDate.setDate(nextPeriodDate.getDate() + input.cycleLength);
+    console.log('Prediction saved to DB:', result.rows[0].id);
 
-    const ovulationDate = new Date(lastPeriodDate);
-    ovulationDate.setDate(ovulationDate.getDate() + Math.round(input.cycleLength / 2));
-
-    const daysUntilNextPeriod = Math.floor((nextPeriodDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    const daysUntilOvulation = Math.floor((ovulationDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-    // ✅ Calculate fertile window
-    const fertileStart = new Date(lastPeriodDate);
-    fertileStart.setDate(fertileStart.getDate() + Math.max(0, Math.round(input.cycleLength / 2) - 3));
-
-    const fertileEnd = new Date(lastPeriodDate);
-    fertileEnd.setDate(fertileEnd.getDate() + Math.round(input.cycleLength / 2) + 3);
-
-    const isPeakFertility = Math.abs(daysUntilOvulation) <= 1;
-
-    // ✅ Generate recommendations
-    const recommendations = generateRecommendations({
-      daysUntilPeriod: daysUntilNextPeriod,
-      pmsLikelihood: prediction.pmsLikelihood,
-      isPeakFertility,
-      stressLevel: input.stressLevel,
-      sleepHours: input.sleepHours,
-      exerciseDays: input.exerciseDays
-    });
-
-    const response: PredictionResponse = {
+    // Return full prediction data
+    res.json({
       success: true,
+      message: 'Prediction saved successfully',
       data: {
-        nextPeriodDate: formatDate(nextPeriodDate),
-        ovulationDate: formatDate(ovulationDate),
-        currentCycleDay,
-        daysUntilNextPeriod,
-        daysUntilOvulation,
-        predictions: {
-          nextPeriodDays: daysUntilNextPeriod,
-          ovulationDay: currentCycleDay + daysUntilOvulation,
-          pmsLikelihood: prediction.pmsLikelihood,
-          confidence: {
-            periodConfidence: 0.92,
-            ovulationConfidence: 0.88,
-            pmsConfidence: 0.85
-          }
-        },
-        fertility: {
-          fertileWindowStart: formatDate(fertileStart),
-          fertileWindowEnd: formatDate(fertileEnd),
-          isPeakFertility
-        },
-        recommendations
-      }
-    };
-
-    // ✅ Store prediction
-    storePrediction({
-      timestamp: new Date().toISOString(),
-      input,
-      prediction: response.data
+        ...mlResult.predictions,
+        ...mlResult.fertility,
+        recommendations: mlResult.recommendations,
+        id: result.rows[0].id,
+        createdAt: result.rows[0].createdat,
+      },
     });
-
-    res.json(response);
   } catch (error) {
     console.error('Prediction error:', error);
     res.status(500).json({
       success: false,
-      message: 'Error making prediction: ' + (error instanceof Error ? error.message : 'Unknown error')
+      message: 'Failed to save prediction: ' + (error as any).message,
     });
   }
 });
 
-// GET /api/predictions
-predictionsRouter.get('/predictions', (req: Request, res: Response) => {
+// GET /api/predictions - Get all predictions for user
+router.get('/predictions', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
-    const predictions = getPredictions();
+    const userId = req.userId;
+
+    const result = await pool.query(
+      `SELECT * FROM predictions 
+       WHERE userId = $1 
+       ORDER BY createdAt DESC 
+       LIMIT 10`,
+      [userId]
+    );
+
+    const formattedPredictions = result.rows.map(row => ({
+      id: row.id,
+      userId: row.userid,
+      lastPeriodDate: row.lastperioddate,
+      cycleLength: row.cyclelength,
+      periodDuration: row.periodduration,
+      flowIntensity: row.flowintensity,
+      stressLevel: row.stresslevel,
+      sleepHours: row.sleephours,
+      exerciseDays: row.exercisedays,
+      moodLevel: row.moodlevel,
+      energyLevel: row.energylevel,
+      nextPeriodDate: row.nextperioddate,
+      ovulationDate: row.ovulationdate,
+      currentCycleDay: row.currentcycleday,
+      pmsLikelihood: row.pmslikelihood,
+      createdAt: row.createdat,
+    }));
+
     res.json({
       success: true,
-      count: predictions.length,
-      data: predictions
+      data: formattedPredictions,
     });
   } catch (error) {
+    console.error('Error fetching predictions:', error);
     res.status(500).json({
       success: false,
-      message: 'Error fetching predictions'
+      message: 'Failed to fetch predictions',
     });
   }
 });
 
-// Helper functions
-function validateInput(input: PredictionInput): { valid: boolean; errors: string[] } {
-  const errors: string[] = [];
+// GET /api/predictions/latest
+router.get('/predictions/latest', authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.userId;
 
-  if (!input.lastPeriodDate) {
-    errors.push('lastPeriodDate is required');
-  } else {
-    const date = new Date(input.lastPeriodDate);
-    if (isNaN(date.getTime())) {
-      errors.push('lastPeriodDate must be a valid date (YYYY-MM-DD)');
-    } else if (date > new Date()) {
-      errors.push('lastPeriodDate cannot be in the future');
-    } else {
-      const daysDiff = (new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysDiff > 365) {
-        errors.push('lastPeriodDate cannot be more than 1 year old');
-      }
+    const result = await pool.query(
+      `SELECT * FROM predictions WHERE userId = $1 ORDER BY createdAt DESC LIMIT 1`,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.json({ success: true, data: null });
     }
+
+    const row = result.rows[0];
+    res.json({
+      success: true,
+      data: {
+        id: row.id,
+        userId: row.userid,
+        lastPeriodDate: row.lastperioddate,
+        cycleLength: row.cyclelength,
+        periodDuration: row.periodduration,
+        flowIntensity: row.flowintensity,
+        stressLevel: row.stresslevel,
+        sleepHours: row.sleephours,
+        exerciseDays: row.exercisedays,
+        moodLevel: row.moodlevel,
+        energyLevel: row.energylevel,
+        nextPeriodDate: row.nextperioddate,
+        ovulationDate: row.ovulationdate,
+        currentCycleDay: row.currentcycleday,
+        pmsLikelihood: row.pmslikelihood,
+        createdAt: row.createdat,
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching latest prediction:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch latest prediction' });
   }
+});
 
-  if (!input.cycleLength || input.cycleLength < 21 || input.cycleLength > 35) {
-    errors.push('cycleLength must be between 21-35 days');
+// GET /api/stats
+router.get('/stats', authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.userId;
+
+    const result = await pool.query(
+      `SELECT 
+        COUNT(*) as totalPredictions,
+        ROUND(AVG(cycleLength)) as avgCycleLength,
+        ROUND(AVG(stressLevel)) as avgStressLevel,
+        ROUND(AVG(sleepHours)::numeric, 1) as avgSleepHours,
+        ROUND(AVG(pmsLikelihood)::numeric, 3) as avgPmsLikelihood
+      FROM predictions WHERE userId = $1`,
+      [userId]
+    );
+
+    const stats = result.rows[0];
+
+    res.json({
+      success: true,
+      data: {
+        totalPredictions: parseInt(stats.totalpredictions) || 0,
+        avgCycleLength: parseInt(stats.avgcyclelength) || 28,
+        avgStressLevel: parseInt(stats.avgstresslevel) || 5,
+        avgSleepHours: parseFloat(stats.avgsleephours) || 7,
+        avgPmsLikelihood: parseFloat(stats.avgpmslikelihood) || 0.3,
+      },
+    });
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch stats' });
   }
+});
 
-  if (!input.periodDuration || input.periodDuration < 3 || input.periodDuration > 7) {
-    errors.push('periodDuration must be between 3-7 days');
-  }
-
-  if (input.flowIntensity === undefined || input.flowIntensity < 0 || input.flowIntensity > 2) {
-    errors.push('flowIntensity must be 0, 1, or 2');
-  }
-
-  if (!input.stressLevel || input.stressLevel < 1 || input.stressLevel > 10) {
-    errors.push('stressLevel must be between 1-10');
-  }
-
-  if (!input.sleepHours || input.sleepHours < 4 || input.sleepHours > 12) {
-    errors.push('sleepHours must be between 4-12');
-  }
-
-  if (input.exerciseDays === undefined || input.exerciseDays < 0 || input.exerciseDays > 7) {
-    errors.push('exerciseDays must be between 0-7');
-  }
-
-  if (!input.age || input.age < 15 || input.age > 55) {
-    errors.push('age must be between 15-55');
-  }
-
-  return {
-    valid: errors.length === 0,
-    errors
-  };
-}
-
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-interface RecommendationParams {
-  daysUntilPeriod: number;
-  pmsLikelihood: number;
-  isPeakFertility: boolean;
-  stressLevel: number;
-  sleepHours: number;
-  exerciseDays: number;
-}
-
-function generateRecommendations(params: RecommendationParams): string[] {
-  const recommendations: string[] = [];
-
-  if (params.isPeakFertility) {
-    recommendations.push('🔴 You are in your fertile window - use protection if needed');
-  }
-
-  if (params.pmsLikelihood > 0.5) {
-    recommendations.push('⚡ High PMS risk - consider increasing self-care');
-    recommendations.push('💧 Stay hydrated and maintain sleep schedule');
-  } else if (params.pmsLikelihood > 0.25) {
-    recommendations.push('⚠️ Moderate PMS risk - be mindful of symptoms');
-  }
-
-  if (params.stressLevel >= 7) {
-    recommendations.push('😰 Stress levels are elevated - try relaxation techniques');
-  }
-
-  if (params.sleepHours < 7) {
-    recommendations.push('😴 Sleep could be improved - aim for 7-9 hours per night');
-  }
-
-  if (params.exerciseDays < 3) {
-    recommendations.push('🏃 Increase exercise to 3-5 days per week for better cycle health');
-  }
-
-  if (recommendations.length === 0) {
-    recommendations.push('✅ Keep up the healthy habits - you are in a good place!');
-  }
-
-  return recommendations;
-}
+export const predictionsRouter = router;
