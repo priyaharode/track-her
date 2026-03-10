@@ -1,19 +1,20 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import '../styles/auth.css';
+import '../styles/auth_modern.css';
 
-export default function Login() {
+export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, loading } = useAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       await login(email, password);
@@ -23,69 +24,65 @@ export default function Login() {
     }
   };
 
+
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-wrapper">
         <div className="auth-header">
-          <span className="auth-icon">🌸</span>
-          <h1>FemSync</h1>
-          <p>Your AI Health Companion</p>
+          <div className="auth-logo">🎀</div>
+          <h1>TrackHER</h1>
+          <p>Women's Health Companion</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <h2>Welcome Back! 👋</h2>
-          <p className="auth-subtitle">Log in to your account</p>
+        <div className="auth-card">
+          <h2>Welcome Back</h2>
 
           {error && <div className="error-message">{error}</div>}
 
-          <div className="form-field">
-            <label htmlFor="email">Email Address</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit}>
+  <div className="form-field">
+    <label htmlFor="email">EMAIL</label>
+    <input
+      id="email"
+      type="email"
+      placeholder="your@email.com"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+      disabled={loading}
+    />
+  </div>
 
-          <div className="form-field">
-            <label htmlFor="password">Password</label>
-            <div className="password-field">
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? '👁️' : '👁️‍🗨️'}
-              </button>
-            </div>
-          </div>
+  <div className="form-field">
+    <label htmlFor="password">PASSWORD</label>
+    <input
+      id="password"
+      type="password"
+      placeholder="••••••••"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+      disabled={loading}
+    />
+  </div>
 
-          <button type="submit" className="btn-primary-auth" disabled={loading}>
-            {loading ? '⏳ Logging in...' : '✨ Log In'}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p>Don't have an account?</p>
-          <Link to="/signup">Create one here</Link>
+  <button 
+    type="submit" 
+    className="btn-primary-auth"
+    disabled={loading}
+  >
+    {loading ? 'SIGNING IN...' : 'SIGN IN'}
+  </button>
+</form>
+<div className="auth-footer">
+  <p>
+    Don't have an account?{' '}
+    <a onClick={() => navigate('/signup')}>
+      Create one
+    </a>
+  </p>
+</div>
         </div>
-      </div>
-
-      <div className="auth-background">
-        <div className="circle circle-1"></div>
-        <div className="circle circle-2"></div>
-        <div className="circle circle-3"></div>
       </div>
     </div>
   );
