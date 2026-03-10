@@ -230,8 +230,8 @@ export default function Dashboard() {
       {/* Header */}
       <header className="dashboard-header">
         <div className="header-left">
-          <h1>HER Dashboard</h1>
-          <p>Welcome back pretty woman! 🎀</p>
+          <h1>🌸 FemSync Dashboard</h1>
+          <p>Welcome back, {user?.firstName || 'User'}! 👋</p>
         </div>
         <div className="header-right">
           <div className="user-info">
@@ -287,7 +287,7 @@ export default function Dashboard() {
                   </div>
 
                   <div className="stat-card">
-                    <h3>🤍 Ovulation</h3>
+                    <h3>💚 Ovulation</h3>
                     <p className="stat-value">{formatDateForDisplay(currentPrediction.ovulationDate)}</p>
                     <p className="stat-meta">{currentPrediction.daysUntilOvulation} days away</p>
                   </div>
@@ -618,7 +618,7 @@ export default function Dashboard() {
                         className={`opt-btn ${flowIntensity === v ? 'active' : ''}`}
                         onClick={() => setFlowIntensity(v)}
                       >
-                        {v === 0 ? '💚 Light' : v === 1 ? '💛 Normal' : '❤️ Heavy'}
+                        {v === 0 ? '🟢 Light' : v === 1 ? '🟡 Normal' : '🔴 Heavy'}
                       </button>
                     ))}
                   </div>
@@ -626,7 +626,7 @@ export default function Dashboard() {
               </div>
 
               <div className="form-section">
-                <h4>💅 Lifestyle</h4>
+                <h4>💪 Lifestyle</h4>
                 <div className="form-row">
                   <div className="form-field">
                     <label>Stress: {stressLevel}/10</label>
