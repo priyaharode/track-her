@@ -1,0 +1,46 @@
+{
+  "best_cycle_model": "RandomForest",
+  "best_ovulation_model": "RandomForest",
+  "cycle_metrics": {
+    "R2": 0.4221038348004824,
+    "RMSE": 3.5,
+    "MAE": 2.6
+  },
+  "ovulation_metrics": {
+    "R2": 0.3102447402799061,
+    "RMSE": 2.1,
+    "MAE": 1.6
+  },
+  "risk_thresholds": {
+    "UnusualBleeding": 1.0,
+    "MeanBleedingIntensity": 11.5,
+    "LengthofMenses": 7.0,
+    "TotalMensesScore": 12.0,
+    "PhasesBleeding": 1.0
+  },
+  "feature_columns": [
+    "MeanCycleLength",
+    "LengthofLutealPhase",
+    "LengthofMenses",
+    "MeanBleedingIntensity",
+    "TotalNumberofHighDays",
+    "TotalNumberofPeakDays",
+    "TotalDaysofFertility",
+    "NumberofDaysofIntercourse",
+    "IntercourseInFertileWindow",
+    "Age",
+    "BMI",
+    "Numberpreg",
+    "Livingkids",
+    "Miscarriages",
+    "Abortions",
+    "Reprocate",
+    "Breastfeeding",
+    "TotalMensesScore",
+    "UnusualBleeding",
+    "PhasesBleeding"
+  ],
+  "training_date": "2026-03-10T20:25:28.271535",
+  "training_samples": 1212,
+  "test_samples": 303
+}

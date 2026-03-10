@@ -1,26 +1,31 @@
 import { useState, useEffect, useMemo } from 'react';
 import {
-  LineChart, Line, AreaChart, Area, BarChart, Bar,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+import { usePredictions } from '../hooks/usePredictions';
+import { buildMLFeatures, buildMLSymptoms } from '../utils/cycleCalculations';
+import { RiskAlert } from '../components/RiskAlert';
 import '../styles/dashboard.css';
 
 interface Prediction {
   id: number;
-  lastPeriodDate: string;
-  nextPeriodDate: string;
-  ovulationDate: string;
-  currentCycleDay: number;
-  pmsLikelihood: number;
-  cycleLength: number;
-  periodDuration: number;
-  stressLevel: number;
-  sleepHours: number;
-  exerciseDays: number;
-  moodLevel: number;
-  energyLevel: number;
-  createdAt: string;
+  userid: number;
+  lastperioddate: string;
+  nextperioddate: string;
+  ovulationdate: string;
+  currentcycleday: number;
+  pmslikelihood: number;
+  cyclelength: number;
+  periodduration: number;
+  flowintensity: number;
+  stresslevel: number;
+  sleephours: number;
+  exercisedays: number;
+  moodlevel: number;
+  energylevel: number;
+  createdat: string;
+  updatedat: string;
 }
 
 interface Stats {
@@ -31,39 +36,23 @@ interface Stats {
   avgPmsLikelihood: number;
 }
 
-interface PredictionData {
-  nextPeriodDate: string;
-  ovulationDate: string;
-  currentCycleDay: number;
-  daysUntilNextPeriod: number;
-  daysUntilOvulation: number;
-  pmsLikelihood: number;
-  confidence?: {
-    periodConfidence: number;
-    ovulationConfidence: number;
-    pmsConfidence: number;
-  };
-  fertility?: {
-    fertileWindowStart: string;
-    fertileWindowEnd: string;
-    isPeakFertility: boolean;
-  };
-  recommendations?: string[];
-}
-
 export default function Dashboard() {
   const { user, token, logout } = useAuth();
+  const { fetchMLPredictions, loading: mlLoading, error: mlError, predictions: mlPredictions } = usePredictions(token || undefined);
+
+  // Data state
   const [predictions, setPredictions] = useState<Prediction[]>([]);
-  const [currentPrediction, setCurrentPrediction] = useState<PredictionData | null>(null);
+  const [currentPrediction, setCurrentPrediction] = useState<Prediction | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState('');
   const [submitError, setSubmitError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [activeTab, setActiveTab] = useState('current');
 
   // Form state
-  const [lastPeriodDate, setLastPeriodDate] = useState('2026-03-01');
+  const [lastPeriodDate, setLastPeriodDate] = useState('2026-02-12');
   const [cycleLength, setCycleLength] = useState(28);
   const [periodDuration, setPeriodDuration] = useState(5);
   const [flowIntensity, setFlowIntensity] = useState(1);
@@ -91,24 +80,25 @@ export default function Dashboard() {
 
       if (predRes.ok) {
         const predData = await predRes.json();
-        const predictions = predData.data || [];
-        console.log('Loaded predictions:', predictions);
-        setPredictions(predictions);
+        const predictionsData = predData.data || [];
+        console.log('✅ Loaded predictions:', predictionsData);
+        setPredictions(predictionsData);
 
-        if (predictions.length > 0) {
-          const latest = predictions[0];
-          setLastPeriodDate(latest.lastPeriodDate);
-          setCycleLength(latest.cycleLength);
-          setPeriodDuration(latest.periodDuration);
-          setFlowIntensity(latest.flowIntensity);
-          setStressLevel(latest.stressLevel);
-          setSleepHours(latest.sleepHours);
-          setExerciseDays(latest.exerciseDays);
-          setMoodLevel(latest.moodLevel || 7);
-          setEnergyLevel(latest.energyLevel || 6);
+        if (predictionsData.length > 0) {
+          const latest = predictionsData[0];
+          setCurrentPrediction(latest);
+          setLastPeriodDate(latest.lastperioddate);
+          setCycleLength(latest.cyclelength);
+          setPeriodDuration(latest.periodduration);
+          setFlowIntensity(latest.flowintensity || 1);
+          setStressLevel(latest.stresslevel);
+          setSleepHours(latest.sleephours);
+          setExerciseDays(latest.exercisedays);
+          setMoodLevel(latest.moodlevel || 7);
+          setEnergyLevel(latest.energylevel || 6);
         }
-      } else if (predRes.status !== 401) {
-        console.error('Failed to load predictions:', predRes.statusText);
+      } else {
+        console.warn('⚠️ Could not load predictions');
       }
 
       // Load stats
@@ -118,108 +108,187 @@ export default function Dashboard() {
 
       if (statsRes.ok) {
         const statsData = await statsRes.json();
-        console.log('Loaded stats:', statsData.data);
+        console.log('✅ Loaded stats:', statsData.data);
         setStats(statsData.data);
       }
     } catch (err) {
-      console.error('Error loading data:', err);
+      console.error('❌ Error loading data:', err);
       setError('Failed to load data');
     } finally {
       setLoading(false);
     }
   };
 
+  /**
+   * Convert ML cycle length (days) to next period DATE
+   */
+  const calculateDateFromCycleLength = (startDate: string, cycleLengthDays: number): string => {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + Math.round(cycleLengthDays));
+    return date.toISOString().split('T')[0];
+  };
+
+  /**
+   * Calculate ovulation date (typically day 14 of cycle)
+   */
+  const calculateOvulationDate = (startDate: string, cycleLengthDays: number): string => {
+    const date = new Date(startDate);
+    const ovulationDay = Math.round(cycleLengthDays / 2);
+    date.setDate(date.getDate() + ovulationDay);
+    return date.toISOString().split('T')[0];
+  };
+
+  /**
+   * Calculate days until date
+   */
+  const daysUntil = (dateStr: string | undefined): number | string => {
+    if (!dateStr) return 'N/A';
+    try {
+      const date = new Date(dateStr);
+      const today = new Date();
+      const diffTime = date.getTime() - today.getTime();
+      const days = Math.ceil(diffTime / (1000 * 3600 * 24));
+      return isNaN(days) ? 'N/A' : days;
+    } catch {
+      return 'N/A';
+    }
+  };
+
+  /**
+   * Calculate current cycle day
+   */
+  const getCurrentCycleDay = (lastPeriodDate: string, cycleLength: number): number => {
+    const lastPeriod = new Date(lastPeriodDate);
+    const today = new Date();
+    const timeDiff = today.getTime() - lastPeriod.getTime();
+    const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+    return (daysDiff % cycleLength) + 1;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError('');
+    setSuccessMessage('');
     setSubmitLoading(true);
 
     try {
-      const input = {
-        lastPeriodDate,
+      console.log('🚀 Step 1: Getting ML predictions...');
+      
+      // Get ML predictions
+      const mlResult = await fetchMLPredictions(
         cycleLength,
         periodDuration,
         flowIntensity,
         stressLevel,
-        sleepHours,
-        exerciseDays,
-        moodLevel,
-        energyLevel,
-        age,
-      };
+        age
+      );
 
-      const response = await fetch('http://localhost:5000/api/predict', {
+      if (!mlResult) {
+        throw new Error('Failed to get ML predictions');
+      }
+
+      console.log('✅ Step 2: Got ML predictions, calculating dates...');
+
+      // Extract ML cycle prediction (in days)
+      const mlCycleLengthDays = mlResult.cycleLength?.predicted_cycle_length || cycleLength;
+      
+      // Calculate next period date from ML prediction
+      const nextPeriodDate = calculateDateFromCycleLength(lastPeriodDate, mlCycleLengthDays);
+      const ovulationDate = calculateOvulationDate(lastPeriodDate, mlCycleLengthDays);
+      const currentCycleDay = getCurrentCycleDay(lastPeriodDate, cycleLength);
+
+      // Calculate PMS likelihood
+      const daysBeforePeriod = cycleLength - currentCycleDay;
+      let pmsLikelihood = 0;
+      if (daysBeforePeriod <= 7 && daysBeforePeriod > 0) {
+        pmsLikelihood = (7 - daysBeforePeriod) / 7;
+      }
+      pmsLikelihood += stressLevel * 0.02;
+      pmsLikelihood -= sleepHours * 0.01;
+      pmsLikelihood = Math.max(0, Math.min(1, pmsLikelihood));
+
+      console.log('✅ Step 3: Saving to database...');
+
+      // Save to database
+      const saveRes = await fetch('http://localhost:5000/api/predictions/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(input),
+        body: JSON.stringify({
+          lastPeriodDate,
+          cycleLength: Math.round(mlCycleLengthDays),
+          periodDuration,
+          flowIntensity,
+          stressLevel,
+          sleepHours,
+          exerciseDays,
+          moodLevel,
+          energyLevel,
+          nextPeriodDate,
+          ovulationDate,
+          currentCycleDay,
+          pmsLikelihood
+        })
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        console.log('Prediction response:', data.data);
-        setCurrentPrediction(data.data);
-        await loadData();
-        setSubmitError('');
-        setActiveTab('current');
-      } else {
-        setSubmitError(data.message || 'Failed to save prediction');
+      if (!saveRes.ok) {
+        const error = await saveRes.json();
+        throw new Error(error.error || 'Failed to save prediction');
       }
+
+      console.log('✅ Step 4: Reloading data...');
+
+      // Reload to show in history
+      await loadData();
+
+      setSuccessMessage('✅ Prediction saved! Check History & Trends to see it.');
+      setActiveTab('current');
+
+      setTimeout(() => setSuccessMessage(''), 4000);
     } catch (err) {
-      setSubmitError('Error saving prediction');
-      console.error('Error:', err);
+      const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+      console.error('❌ Error:', errorMsg);
+      setSubmitError(`Error: ${errorMsg}`);
     } finally {
       setSubmitLoading(false);
     }
   };
 
-  // Format date helper
-  const formatDateForDisplay = (dateStr: string | undefined): string => {
+  // Format date
+  const formatDate = (dateStr: string | undefined): string => {
     if (!dateStr) return 'N/A';
     try {
-      if (dateStr.includes('T')) {
-        return dateStr.split('T')[0];
-      }
+      if (dateStr.includes('T')) return dateStr.split('T')[0];
       return dateStr;
     } catch {
       return 'N/A';
     }
   };
 
-  // Transform predictions for chart display
+  // Trend data
   const trendData = useMemo(() => {
     if (!predictions || predictions.length === 0) return [];
-    
     return predictions
+      .slice()
       .reverse()
-      .map((p, idx) => ({
-        id: idx + 1,
-        name: `Update ${idx + 1}`,
-        lastPeriod: formatDateForDisplay(p.lastPeriodDate),
-        nextPeriod: formatDateForDisplay(p.nextPeriodDate),
-        pms: Math.round((p.pmsLikelihood || 0) * 100),
-        stress: p.stressLevel || 0,
-        sleep: Math.round(p.sleepHours * 10) / 10 || 0,
-        energy: p.energyLevel || 0,
-        mood: p.moodLevel || 0,
-        cycleDay: p.currentCycleDay || 0,
-        cycleLength: p.cycleLength || 28,
-        exercise: p.exerciseDays || 0,
+      .map((p: any, idx) => ({
+        name: `#${predictions.length - idx}`,
+        pms: Math.round((p.pmslikelihood || 0) * 100),
+        stress: p.stresslevel || 0,
+        sleep: Math.round((p.sleephours || 0) * 10) / 10 || 0,
+        energy: p.energylevel || 0,
+        mood: p.moodlevel || 0,
       }));
   }, [predictions]);
-
-  console.log('Current prediction:', currentPrediction);
-  console.log('Trend data:', trendData);
 
   if (loading) {
     return (
       <div className="dashboard-container">
         <div className="loading-state">
           <span className="spinner"></span>
-          <p>Loading your data...</p>
+          <p>Loading your health data...</p>
         </div>
       </div>
     );
@@ -266,64 +335,105 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {error && <div className="error-alert">{error}</div>}
+        {/* Errors & Success */}
+        {error && <div className="error-alert" style={{ marginBottom: '16px' }}>❌ {error}</div>}
+        {successMessage && (
+          <div style={{
+            backgroundColor: '#D1FAE5',
+            color: '#065F46',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            marginBottom: '16px',
+            border: '1px solid #6EE7B7',
+            fontWeight: '500'
+          }}>
+            {successMessage}
+          </div>
+        )}
 
-        {/* Current Prediction Tab */}
+        {/* ========== CURRENT PREDICTION TAB ========== */}
         {activeTab === 'current' && (
           <div className="tab-content">
+            {/* Risk Alert (from ML) */}
+            {mlPredictions && <RiskAlert data={mlPredictions.medicalRisk} />}
+
+            {mlError && (
+              <div style={{
+                backgroundColor: '#FEE2E2',
+                color: '#991B1B',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                marginBottom: '16px',
+                border: '1px solid #FECACA'
+              }}>
+                ⚠️ {mlError}
+              </div>
+            )}
+
+            <h3 style={{
+              margin: '0 0 16px 0',
+              color: '#9C2B4E',
+              fontSize: '20px',
+              fontWeight: '600'
+            }}>
+              📅 Cycle Calendar
+            </h3>
+
             {currentPrediction ? (
               <>
+                {/* Stat Cards Grid */}
                 <div className="stats-grid">
                   <div className="stat-card">
-                    <h3>📅 Last Period</h3>
-                    <p className="stat-value">{formatDateForDisplay(lastPeriodDate)}</p>
-                    <p className="stat-meta">Your tracked date</p>
+                    <h3>📅 LAST PERIOD</h3>
+                    <p className="stat-value">{formatDate(currentPrediction?.lastperioddate)}</p>
+                    <p className="stat-meta">Start date</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>📅 Next Period</h3>
-                    <p className="stat-value">{formatDateForDisplay(currentPrediction.nextPeriodDate)}</p>
-                    <p className="stat-meta">{currentPrediction.daysUntilNextPeriod} days away</p>
+                    <h3>📅 NEXT PERIOD</h3>
+                    <p className="stat-value">{formatDate(currentPrediction?.nextperioddate)}</p>
+                    <p className="stat-meta">{daysUntil(currentPrediction?.nextperioddate)} days away</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>🤍 Ovulation</h3>
-                    <p className="stat-value">{formatDateForDisplay(currentPrediction.ovulationDate)}</p>
-                    <p className="stat-meta">{currentPrediction.daysUntilOvulation} days away</p>
+                    <h3>🎯 OVULATION</h3>
+                    <p className="stat-value">{formatDate(currentPrediction?.ovulationdate)}</p>
+                    <p className="stat-meta">{daysUntil(currentPrediction?.ovulationdate)} days away</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>⚡ PMS Risk</h3>
-                    <p className="stat-value">{Math.round((currentPrediction.pmsLikelihood || 0) * 100)}%</p>
-                    <p className="stat-meta">Current risk level</p>
+                    <h3>⚡ PMS RISK</h3>
+                    <p className="stat-value">{Math.round((currentPrediction?.pmslikelihood || 0) * 100)}%</p>
+                    <p className="stat-meta">Current risk</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>🔄 Cycle Day</h3>
-                    <p className="stat-value">Day {currentPrediction.currentCycleDay || 1}</p>
-                    <p className="stat-meta">of {cycleLength} days</p>
+                    <h3>🔄 CYCLE DAY</h3>
+                    <p className="stat-value">Day {currentPrediction?.currentcycleday}</p>
+                    <p className="stat-meta">of {currentPrediction?.cyclelength} days</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>😴 Sleep</h3>
-                    <p className="stat-value">{sleepHours}h</p>
-                    <p className="stat-meta">Average per night</p>
+                    <h3>😴 SLEEP</h3>
+                    <p className="stat-value">{currentPrediction?.sleephours}h</p>
+                    <p className="stat-meta">Average</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>😰 Stress</h3>
-                    <p className="stat-value">{stressLevel}/10</p>
+                    <h3>😰 STRESS</h3>
+                    <p className="stat-value">{currentPrediction?.stresslevel}/10</p>
                     <p className="stat-meta">Current level</p>
                   </div>
 
                   <div className="stat-card">
-                    <h3>😊 Mood</h3>
-                    <p className="stat-value">{moodLevel}/10</p>
-                    <p className="stat-meta">Today's mood</p>
+                    <h3>😊 MOOD</h3>
+                    <p className="stat-value">{currentPrediction?.moodlevel}/10</p>
+                    <p className="stat-meta">Today</p>
                   </div>
                 </div>
 
-                {stats && (
+                {/* Stats */}
+                {stats && stats.totalPredictions > 0 && (
                   <div className="insights-card">
                     <h3>📊 Your Statistics</h3>
                     <div className="insights-grid">
@@ -333,7 +443,7 @@ export default function Dashboard() {
                       </div>
                       <div className="insight">
                         <span className="insight-label">Average Cycle:</span>
-                        <span className="insight-value">{stats.avgCycleLength} days</span>
+                        <span className="insight-value">{Math.round(stats.avgCycleLength)} days</span>
                       </div>
                       <div className="insight">
                         <span className="insight-label">Avg Stress:</span>
@@ -341,24 +451,9 @@ export default function Dashboard() {
                       </div>
                       <div className="insight">
                         <span className="insight-label">Avg Sleep:</span>
-                        <span className="insight-value">{stats.avgSleepHours.toFixed(1)} hours</span>
-                      </div>
-                      <div className="insight">
-                        <span className="insight-label">Avg PMS Risk:</span>
-                        <span className="insight-value">{Math.round((stats.avgPmsLikelihood || 0) * 100)}%</span>
+                        <span className="insight-value">{stats.avgSleepHours.toFixed(1)}h</span>
                       </div>
                     </div>
-                  </div>
-                )}
-
-                {currentPrediction.recommendations && currentPrediction.recommendations.length > 0 && (
-                  <div className="recommendations-card">
-                    <h4>✅ Health Tips</h4>
-                    <ul className="tips-list">
-                      {currentPrediction.recommendations.map((rec, idx) => (
-                        <li key={idx}><span className="check">✓</span>{rec}</li>
-                      ))}
-                    </ul>
                   </div>
                 )}
               </>
@@ -366,13 +461,13 @@ export default function Dashboard() {
               <div className="empty-state">
                 <div className="empty-icon">✨</div>
                 <h3>No predictions yet</h3>
-                <p>Fill in your health profile and click "Save & Update" to get started</p>
+                <p>Update your profile and click "Get Predictions" to start</p>
               </div>
             )}
           </div>
         )}
 
-        {/* History & Trends Tab */}
+        {/* ========== HISTORY & TRENDS TAB ========== */}
         {activeTab === 'history' && (
           <div className="tab-content">
             <h3>📈 Your Health Trends Over Time</h3>
@@ -383,19 +478,12 @@ export default function Dashboard() {
                 <div className="chart-container">
                   <h4>⚡ PMS Risk by Update</h4>
                   <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
+                    <LineChart data={trendData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
-                      <YAxis domain={[0, 100]} label={{ value: 'PMS Risk %', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => [`${value}%`, 'PMS Risk']} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="pms" 
-                        stroke="#e74c3c" 
-                        dot={{ fill: '#e74c3c', r: 6 }}
-                        strokeWidth={3}
-                        isAnimationActive={true}
-                      />
+                      <YAxis domain={[0, 100]} label={{ value: 'Risk %', angle: -90, position: 'insideLeft' }} />
+                      <Tooltip />
+                      <Line type="monotone" dataKey="pms" stroke="#e74c3c" dot={{ fill: '#e74c3c', r: 5 }} strokeWidth={2} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -404,156 +492,29 @@ export default function Dashboard() {
                 <div className="chart-container">
                   <h4>😰 Stress Level by Update</h4>
                   <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis domain={[0, 10]} label={{ value: 'Stress (1-10)', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => [value, 'Stress']} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="stress" 
-                        stroke="#f39c12" 
-                        dot={{ fill: '#f39c12', r: 6 }}
-                        strokeWidth={3}
-                        isAnimationActive={true}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Sleep Trend */}
-                <div className="chart-container">
-                  <h4>😴 Sleep Hours by Update</h4>
-                  <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis domain={[0, 12]} label={{ value: 'Hours', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => [`${value}h`, 'Sleep']} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="sleep" 
-                        stroke="#667eea" 
-                        dot={{ fill: '#667eea', r: 6 }}
-                        strokeWidth={3}
-                        isAnimationActive={true}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Energy Trend */}
-                <div className="chart-container">
-                  <h4>⚡ Energy Level by Update</h4>
-                  <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis domain={[0, 10]} label={{ value: 'Energy (1-10)', angle: -90, position: 'insideLeft' }} />
-                      <Tooltip formatter={(value) => [value, 'Energy']} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="energy" 
-                        stroke="#27ae60" 
-                        dot={{ fill: '#27ae60', r: 6 }}
-                        strokeWidth={3}
-                        isAnimationActive={true}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Mood & Exercise Comparison */}
-                <div className="chart-container">
-                  <h4>😊 Mood & Exercise by Update</h4>
-                  <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={trendData} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
+                    <LineChart data={trendData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis domain={[0, 10]} />
                       <Tooltip />
-                      <Line 
-                        type="monotone" 
-                        dataKey="mood" 
-                        stroke="#9b59b6" 
-                        dot={{ fill: '#9b59b6', r: 5 }}
-                        strokeWidth={2}
-                        name="Mood"
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="exercise" 
-                        stroke="#1abc9c" 
-                        dot={{ fill: '#1abc9c', r: 5 }}
-                        strokeWidth={2}
-                        name="Exercise Days"
-                      />
+                      <Line type="monotone" dataKey="stress" stroke="#f39c12" dot={{ fill: '#f39c12', r: 5 }} strokeWidth={2} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
 
-                {/* Detailed Comparison Table */}
-                <div className="comparison-table">
-                  <h4>📊 Detailed Comparison</h4>
-                  <div className="table-container">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Update</th>
-                          <th>Last Period</th>
-                          <th>Next Period</th>
-                          <th>Cycle Day</th>
-                          <th>PMS %</th>
-                          <th>Stress</th>
-                          <th>Sleep</th>
-                          <th>Energy</th>
-                          <th>Mood</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {trendData.map((data, idx) => (
-                          <tr key={idx}>
-                            <td><strong>{data.name}</strong></td>
-                            <td>{data.lastPeriod}</td>
-                            <td>{data.nextPeriod}</td>
-                            <td>Day {data.cycleDay}</td>
-                            <td><span className="pms-badge">{data.pms}%</span></td>
-                            <td>{data.stress}/10</td>
-                            <td>{data.sleep}h</td>
-                            <td>{data.energy}/10</td>
-                            <td>{data.mood}/10</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Raw History List */}
+                {/* History */}
                 <div className="history-list">
-                  <h4>📋 All Predictions ({predictions.length})</h4>
-                  {predictions.map((pred, idx) => (
+                  <h4>📋 All Updates ({predictions.length})</h4>
+                  {predictions.map((pred: any, idx) => (
                     <div key={idx} className="history-item">
                       <div className="history-header">
-                        <strong>Prediction #{predictions.length - idx}</strong>
-                        <span className="history-meta">
-                          Saved: {new Date(pred.createdAt).toLocaleDateString()}
-                        </span>
+                        <strong>Update #{predictions.length - idx}</strong>
+                        <span className="history-meta">{formatDate(pred.createdat)}</span>
                       </div>
                       <div className="history-details">
-                        <div className="detail-row">
-                          <span>📅 Last Period: {formatDateForDisplay(pred.lastPeriodDate)}</span>
-                          <span>📅 Next Period: {formatDateForDisplay(pred.nextPeriodDate)}</span>
-                          <span>🔄 Cycle Day: {pred.currentCycleDay}/{pred.cycleLength}</span>
-                        </div>
-                        <div className="detail-row">
-                          <span>⚡ PMS Risk: {Math.round((pred.pmsLikelihood || 0) * 100)}%</span>
-                          <span>😰 Stress: {pred.stressLevel}/10</span>
-                          <span>😴 Sleep: {pred.sleepHours}h</span>
-                          <span>😊 Mood: {pred.moodLevel}/10</span>
-                          <span>⚡ Energy: {pred.energyLevel}/10</span>
-                          <span>🏃 Exercise: {pred.exerciseDays}/7 days</span>
-                        </div>
+                        <span>📅 {formatDate(pred.lastperioddate)} → {formatDate(pred.nextperioddate)}</span>
+                        <span>🔄 Day {pred.currentcycleday}/{pred.cyclelength}</span>
+                        <span>⚡ PMS: {Math.round((pred.pmslikelihood || 0) * 100)}%</span>
                       </div>
                     </div>
                   ))}
@@ -561,13 +522,13 @@ export default function Dashboard() {
               </>
             ) : (
               <div className="empty-state">
-                <p>💭 No historical data yet. Submit a prediction to see trends!</p>
+                <p>💭 No history yet. Create a prediction to see trends!</p>
               </div>
             )}
           </div>
         )}
 
-        {/* Form Tab */}
+        {/* ========== FORM TAB ========== */}
         {activeTab === 'form' && (
           <div className="tab-content">
             <form className="update-form" onSubmit={handleSubmit}>
@@ -630,80 +591,59 @@ export default function Dashboard() {
                 <div className="form-row">
                   <div className="form-field">
                     <label>Stress: {stressLevel}/10</label>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      value={stressLevel}
-                      onChange={(e) => setStressLevel(Number(e.target.value))}
-                    />
+                    <input type="range" min="1" max="10" value={stressLevel} onChange={(e) => setStressLevel(Number(e.target.value))} />
                   </div>
                   <div className="form-field">
                     <label>Sleep: {sleepHours}h</label>
-                    <input
-                      type="range"
-                      min="4"
-                      max="12"
-                      step="0.5"
-                      value={sleepHours}
-                      onChange={(e) => setSleepHours(Number(e.target.value))}
-                    />
+                    <input type="range" min="4" max="12" step="0.5" value={sleepHours} onChange={(e) => setSleepHours(Number(e.target.value))} />
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-field">
                     <label>Exercise: {exerciseDays}/7</label>
-                    <input
-                      type="range"
-                      min="0"
-                      max="7"
-                      value={exerciseDays}
-                      onChange={(e) => setExerciseDays(Number(e.target.value))}
-                    />
+                    <input type="range" min="0" max="7" value={exerciseDays} onChange={(e) => setExerciseDays(Number(e.target.value))} />
                   </div>
                   <div className="form-field">
                     <label>Mood: {moodLevel}/10</label>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      value={moodLevel}
-                      onChange={(e) => setMoodLevel(Number(e.target.value))}
-                    />
+                    <input type="range" min="1" max="10" value={moodLevel} onChange={(e) => setMoodLevel(Number(e.target.value))} />
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-field">
                     <label>Energy: {energyLevel}/10</label>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      value={energyLevel}
-                      onChange={(e) => setEnergyLevel(Number(e.target.value))}
-                    />
+                    <input type="range" min="1" max="10" value={energyLevel} onChange={(e) => setEnergyLevel(Number(e.target.value))} />
                   </div>
-
                   <div className="form-field">
                     <label>Age</label>
-                    <input
-                      type="number"
-                      value={age}
-                      onChange={(e) => setAge(Number(e.target.value))}
-                      min="15"
-                      max="55"
-                    />
+                    <input type="number" value={age} onChange={(e) => setAge(Number(e.target.value))} min="15" max="55" />
                   </div>
                 </div>
               </div>
 
               {submitError && <div className="error-alert">{submitError}</div>}
 
-              <button type="submit" className="btn-submit" disabled={submitLoading}>
-                {submitLoading ? '⏳ Saving...' : '✅ Save & Update'}
+              <button
+                type="submit"
+                className="btn-submit"
+                disabled={submitLoading || mlLoading}
+                style={{
+                  opacity: submitLoading || mlLoading ? 0.7 : 1,
+                  cursor: submitLoading || mlLoading ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {submitLoading ? '⏳ Saving...' : '🚀 Get Predictions'}
               </button>
+
+              <p style={{
+                marginTop: '12px',
+                fontSize: '12px',
+                color: '#999',
+                textAlign: 'center'
+              }}>
+                ML-powered analysis + automatic save to history
+              </p>
             </form>
           </div>
         )}

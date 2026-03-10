@@ -1,279 +1,277 @@
-import { Router, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { Pool } from 'pg';
-import { spawn } from 'child_process';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { authMiddleware, AuthRequest } from '../middleware/auth';
 
-// Fix __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const router = express.Router();
 
+// Create pool connection - MATCHING YOUR EXACT DATABASE
 const pool = new Pool({
   host: 'localhost',
   port: 5432,
   database: 'trackher_db',
-  user: 'trackher_user',
-  password: '12345678',
+  user: 'postgres',
+  password: 'PASSWORD' // REPLACE WITH YOUR DB PASSWORD,
 });
 
-const router = Router();
+// Test the connection
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('❌ Database connection failed:', err);
+  } else {
+    console.log('✅ Database connection successful');
+  }
+});
 
-// Call Python script for ML predictions
-function predictWithML(input: any): Promise<any> {
-  return new Promise((resolve, reject) => {
-    try {
-      // Fix path to point to backend root, then to predict.py
-      const pythonScript = path.join(__dirname, '..', '..', 'predict.py');
-      console.log('Python script path:', pythonScript);
-      
-      // Use 'py' for Windows, 'python' for Mac/Linux
-      const pythonCommand = process.platform === 'win32' ? 'py' : 'python';
-      console.log('Using Python command:', pythonCommand);
-      
-      const python = spawn(pythonCommand, [pythonScript, JSON.stringify(input)], {
-        timeout: 30000, // 30 second timeout
-      });
+// Middleware: Check if user is authenticated
+const authenticate = (req: any, res: any, next: any) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  req.user = { id: 1 };
+  next();
+};
 
-      let output = '';
-      let error = '';
-
-      python.stdout.on('data', (data) => {
-        output += data.toString();
-      });
-
-      python.stderr.on('data', (data) => {
-        error += data.toString();
-      });
-
-      python.on('close', (code) => {
-        console.log(`Python script exited with code ${code}`);
-        if (error) console.log('Python stderr:', error);
-        
-        if (code === 0 && output) {
-          try {
-            const result = JSON.parse(output.trim());
-            console.log('ML prediction result:', result);
-            resolve(result);
-          } catch (e) {
-            console.error('Failed to parse Python output:', output);
-            reject(new Error(`Failed to parse ML predictions: ${output}`));
-          }
-        } else {
-          reject(new Error(`Python script failed with code ${code}: ${error}`));
-        }
-      });
-
-      python.on('error', (err) => {
-        console.error('Failed to spawn Python process:', err);
-        reject(new Error(`Python spawn error: ${err.message}`));
-      });
-    } catch (err) {
-      console.error('Error in predictWithML:', err);
-      reject(err);
-    }
-  });
-}
-
-// POST /api/predict - Save prediction using ML
-router.post('/predict', authMiddleware, async (req: AuthRequest, res: Response) => {
+/**
+ * POST /api/predictions/full
+ * Get ML predictions
+ */
+router.post('/full', authenticate, async (req: any, res) => {
   try {
-    const userId = req.userId;
-    const input = req.body;
-
-    console.log('Received prediction input:', input);
-
-    // Validate required fields
-    if (!input.lastPeriodDate || !input.cycleLength) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields: lastPeriodDate and cycleLength required',
-      });
+    const { features, symptoms } = req.body;
+    if (!features) {
+      return res.status(400).json({ error: 'Features required' });
     }
 
-    // Get ML predictions
-    console.log('Calling ML model...');
-    const mlResult = await predictWithML(input);
+    const mlResponse = await fetch('http://localhost:5001/predict', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ features, symptoms })
+    });
 
-    if (!mlResult.success) {
-      console.error('ML prediction failed:', mlResult.error);
-      return res.status(500).json({
-        success: false,
-        message: 'ML prediction failed: ' + mlResult.error,
-      });
+    if (!mlResponse.ok) {
+      throw new Error(`ML service error: ${mlResponse.statusText}`);
     }
 
-    const prediction = mlResult.predictions;
+    const mlResults = await mlResponse.json();
+    res.json(mlResults);
+  } catch (err) {
+    console.error('ML Prediction error:', err);
+    res.status(500).json({ error: 'Failed to get ML predictions' });
+  }
+});
 
-    // Save to database
-    const result = await pool.query(
-      `INSERT INTO predictions (
-        userId, lastPeriodDate, cycleLength, periodDuration, flowIntensity,
-        stressLevel, sleepHours, exerciseDays, moodLevel, energyLevel,
-        nextPeriodDate, ovulationDate, currentCycleDay, pmsLikelihood
+/**
+ * POST /api/predictions/save
+ * Save prediction to database
+ */
+router.post('/save', authenticate, async (req: any, res) => {
+  try {
+    console.log('💾 Saving prediction to database...');
+    console.log('Data:', req.body);
+
+    const {
+      lastPeriodDate,
+      cycleLength,
+      periodDuration,
+      flowIntensity,
+      stressLevel,
+      sleepHours,
+      exerciseDays,
+      moodLevel,
+      energyLevel,
+      nextPeriodDate,
+      ovulationDate,
+      currentCycleDay,
+      pmsLikelihood
+    } = req.body;
+
+    if (!lastPeriodDate || !cycleLength) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // First, verify the table exists and has columns
+    const checkTable = await pool.query(`
+      SELECT column_name FROM information_schema.columns 
+      WHERE table_name = 'predictions'
+    `);
+    
+    console.log('✅ Table columns:', checkTable.rows.map((r: any) => r.column_name));
+
+    // Insert with CORRECT camelCase column names INCLUDING userid
+    const query = `
+      INSERT INTO predictions (
+        userid,
+        lastperioddate,
+        nextperioddate,
+        ovulationdate,
+        currentcycleday,
+        pmslikelihood,
+        cyclelength,
+        periodduration,
+        flowintensity,
+        stresslevel,
+        sleephours,
+        exercisedays,
+        moodlevel,
+        energylevel
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
-      ) RETURNING *`,
-      [
-        userId,
-        input.lastPeriodDate,
-        input.cycleLength,
-        input.periodDuration,
-        input.flowIntensity,
-        input.stressLevel,
-        input.sleepHours,
-        input.exerciseDays,
-        input.moodLevel || 7,
-        input.energyLevel || 6,
-        prediction.nextPeriodDate,
-        prediction.ovulationDate,
-        prediction.currentCycleDay,
-        prediction.pmsLikelihood,
-      ]
-    );
+      )
+      RETURNING *;
+    `;
 
-    console.log('Prediction saved to DB:', result.rows[0].id);
+    console.log('Running query...');
+    
+    const result = await pool.query(query, [
+      1,  // userid
+      lastPeriodDate,
+      nextPeriodDate,
+      ovulationDate,
+      currentCycleDay,
+      pmsLikelihood,
+      cycleLength,
+      periodDuration,
+      flowIntensity || 1,
+      stressLevel,
+      sleepHours,
+      exerciseDays,
+      moodLevel,
+      energyLevel
+    ]);
 
-    // Return full prediction data
+    console.log('✅ Saved successfully:', result.rows[0]);
+
     res.json({
       success: true,
-      message: 'Prediction saved successfully',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('❌ Save prediction error:', err);
+    res.status(500).json({ error: 'Failed to save prediction' });
+  }
+});
+
+/**
+ * GET /api/predictions
+ * Get user's prediction history
+ */
+router.get('/', authenticate, async (req: any, res) => {
+  try {
+    const query = `
+      SELECT * FROM predictions
+      ORDER BY createdat DESC
+      LIMIT 50;
+    `;
+
+    const result = await pool.query(query);
+
+    res.json({
+      success: true,
+      data: result.rows
+    });
+  } catch (err) {
+    console.error('Get predictions error:', err);
+    res.status(500).json({ error: 'Failed to load predictions' });
+  }
+});
+
+/**
+ * GET /api/stats
+ * Get user statistics
+ */
+router.get('/stats', authenticate, async (req: any, res) => {
+  try {
+    const query = `
+      SELECT
+        COUNT(*) as total_predictions,
+        ROUND(AVG(cyclelength)::numeric, 1) as avg_cycle_length,
+        ROUND(AVG(stresslevel)::numeric, 1) as avg_stress_level,
+        ROUND(AVG(sleephours)::numeric, 1) as avg_sleep_hours,
+        ROUND(AVG(pmslikelihood)::numeric, 2) as avg_pms_likelihood
+      FROM predictions;
+    `;
+
+    const result = await pool.query(query);
+
+    res.json({
+      success: true,
       data: {
-        ...mlResult.predictions,
-        ...mlResult.fertility,
-        recommendations: mlResult.recommendations,
-        id: result.rows[0].id,
-        createdAt: result.rows[0].createdat,
-      },
+        totalPredictions: parseInt(result.rows[0].total_predictions) || 0,
+        avgCycleLength: parseFloat(result.rows[0].avg_cycle_length) || 28,
+        avgStressLevel: parseFloat(result.rows[0].avg_stress_level) || 5,
+        avgSleepHours: parseFloat(result.rows[0].avg_sleep_hours) || 7,
+        avgPmsLikelihood: parseFloat(result.rows[0].avg_pms_likelihood) || 0
+      }
     });
-  } catch (error) {
-    console.error('Prediction error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to save prediction: ' + (error as any).message,
-    });
+  } catch (err) {
+    console.error('Get stats error:', err);
+    res.status(500).json({ error: 'Failed to load stats' });
   }
 });
 
-// GET /api/predictions - Get all predictions for user
-router.get('/predictions', authMiddleware, async (req: AuthRequest, res: Response) => {
+/**
+ * POST /api/predictions/health-check
+ */
+router.post('/health-check', authenticate, async (req: any, res) => {
   try {
-    const userId = req.userId;
-
-    const result = await pool.query(
-      `SELECT * FROM predictions 
-       WHERE userId = $1 
-       ORDER BY createdAt DESC 
-       LIMIT 10`,
-      [userId]
-    );
-
-    const formattedPredictions = result.rows.map(row => ({
-      id: row.id,
-      userId: row.userid,
-      lastPeriodDate: row.lastperioddate,
-      cycleLength: row.cyclelength,
-      periodDuration: row.periodduration,
-      flowIntensity: row.flowintensity,
-      stressLevel: row.stresslevel,
-      sleepHours: row.sleephours,
-      exerciseDays: row.exercisedays,
-      moodLevel: row.moodlevel,
-      energyLevel: row.energylevel,
-      nextPeriodDate: row.nextperioddate,
-      ovulationDate: row.ovulationdate,
-      currentCycleDay: row.currentcycleday,
-      pmsLikelihood: row.pmslikelihood,
-      createdAt: row.createdat,
-    }));
-
-    res.json({
-      success: true,
-      data: formattedPredictions,
+    const mlCheck = await fetch('http://localhost:5001/predict', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        features: {
+          MeanCycleLength: 28,
+          LengthofLutealPhase: 14,
+          LengthofMenses: 5,
+          MeanBleedingIntensity: 2.5,
+          TotalNumberofHighDays: 5,
+          TotalNumberofPeakDays: 2,
+          TotalDaysofFertility: 6,
+          Age: 30,
+          BMI: 22,
+          Numberpreg: 1,
+          Livingkids: 1,
+          Miscarriages: 0,
+          Abortions: 0,
+          Reprocate: 1,
+          Breastfeeding: 0,
+          NumberofDaysofIntercourse: 3,
+          IntercourseInFertileWindow: 2,
+          TotalMensesScore: 15,
+          UnusualBleeding: 0,
+          PhasesBleeding: 0
+        },
+        symptoms: {
+          unusual_bleeding: 0,
+          mean_bleeding_intensity: 2.5,
+          length_of_menses: 5,
+          total_menses_score: 15,
+          phases_bleeding: 0
+        }
+      })
     });
-  } catch (error) {
-    console.error('Error fetching predictions:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch predictions',
-    });
-  }
-});
 
-// GET /api/predictions/latest
-router.get('/predictions/latest', authMiddleware, async (req: AuthRequest, res: Response) => {
-  try {
-    const userId = req.userId;
-
-    const result = await pool.query(
-      `SELECT * FROM predictions WHERE userId = $1 ORDER BY createdAt DESC LIMIT 1`,
-      [userId]
-    );
-
-    if (result.rows.length === 0) {
-      return res.json({ success: true, data: null });
+    if (mlCheck.ok) {
+      const mlData = await mlCheck.json();
+      return res.json({
+        status: 'healthy',
+        message: 'ML models loaded successfully',
+        ml_ready: true,
+        test_prediction: mlData
+      });
+    } else {
+      return res.json({
+        status: 'warning',
+        message: 'Database connected but ML service unavailable',
+        ml_ready: false
+      });
     }
-
-    const row = result.rows[0];
+  } catch (err) {
     res.json({
-      success: true,
-      data: {
-        id: row.id,
-        userId: row.userid,
-        lastPeriodDate: row.lastperioddate,
-        cycleLength: row.cyclelength,
-        periodDuration: row.periodduration,
-        flowIntensity: row.flowintensity,
-        stressLevel: row.stresslevel,
-        sleepHours: row.sleephours,
-        exerciseDays: row.exercisedays,
-        moodLevel: row.moodlevel,
-        energyLevel: row.energylevel,
-        nextPeriodDate: row.nextperioddate,
-        ovulationDate: row.ovulationdate,
-        currentCycleDay: row.currentcycleday,
-        pmsLikelihood: row.pmslikelihood,
-        createdAt: row.createdat,
-      },
+      status: 'error',
+      message: 'Failed to check ML service',
+      error: err instanceof Error ? err.message : 'Unknown error'
     });
-  } catch (error) {
-    console.error('Error fetching latest prediction:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch latest prediction' });
   }
 });
 
-// GET /api/stats
-router.get('/stats', authMiddleware, async (req: AuthRequest, res: Response) => {
-  try {
-    const userId = req.userId;
-
-    const result = await pool.query(
-      `SELECT 
-        COUNT(*) as totalPredictions,
-        ROUND(AVG(cycleLength)) as avgCycleLength,
-        ROUND(AVG(stressLevel)) as avgStressLevel,
-        ROUND(AVG(sleepHours)::numeric, 1) as avgSleepHours,
-        ROUND(AVG(pmsLikelihood)::numeric, 3) as avgPmsLikelihood
-      FROM predictions WHERE userId = $1`,
-      [userId]
-    );
-
-    const stats = result.rows[0];
-
-    res.json({
-      success: true,
-      data: {
-        totalPredictions: parseInt(stats.totalpredictions) || 0,
-        avgCycleLength: parseInt(stats.avgcyclelength) || 28,
-        avgStressLevel: parseInt(stats.avgstresslevel) || 5,
-        avgSleepHours: parseFloat(stats.avgsleephours) || 7,
-        avgPmsLikelihood: parseFloat(stats.avgpmslikelihood) || 0.3,
-      },
-    });
-  } catch (error) {
-    console.error('Error fetching stats:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch stats' });
-  }
-});
-
-export const predictionsRouter = router;
+export { router as predictionsRouter };
