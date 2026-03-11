@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 FemSync ML Training - LOCAL VERSION
-Trains models in YOUR environment so pickle compatibility is GUARANTEED
-"""
+This script trains the cycle length and ovulation day prediction models using the provided CSV data.
+It also calculates risk thresholds for medical alerts and saves all models and configurations to the 'models'"""
 
 import pandas as pd
 import numpy as np

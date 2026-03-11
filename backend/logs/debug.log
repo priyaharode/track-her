@@ -1,0 +1,370 @@
+{"timestamp":"2026-03-11T13:41:35.516Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:41:35.522Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:41:35.525Z","level":"debug","message":"Fetching predictions","context":{"userId":5,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T13:41:35.647Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:41:35.658Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:41:35.661Z","level":"debug","message":"Fetching predictions","context":{"userId":5,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T13:41:52.627Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:41:52.637Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.494Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.511Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.522Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.526Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.530Z","level":"debug","message":"Fetching user stats","context":{"userId":5}}
+{"timestamp":"2026-03-11T13:47:18.568Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.572Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:47:18.574Z","level":"debug","message":"Fetching user stats","context":{"userId":5}}
+{"timestamp":"2026-03-11T13:47:28.024Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:49:59.826Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T13:49:59.832Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T14:05:59.262Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T14:06:11.585Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T14:06:11.589Z","level":"debug","message":"Saving prediction request","context":{"userId":5}}
+{"timestamp":"2026-03-11T14:06:11.734Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T14:06:11.739Z","level":"debug","message":"Fetching predictions","context":{"userId":5,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:06:11.778Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T14:06:11.804Z","level":"debug","message":"User 5 authenticated successfully"}
+{"timestamp":"2026-03-11T14:06:11.808Z","level":"debug","message":"Fetching user stats","context":{"userId":5}}
+{"timestamp":"2026-03-11T14:10:08.830Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:10:08.834Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:10:08.947Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:10:08.951Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:10:08.972Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:10:08.976Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:10:08.993Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:10:08.995Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:10:53.600Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:11:05.033Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:11:05.036Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:11:05.165Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:11:05.168Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:11:05.202Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:11:05.206Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:26:42.031Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:26:42.036Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:26:42.149Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:26:42.150Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:26:42.158Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:26:42.159Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:26:42.168Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:26:42.170Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:31:57.234Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.237Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:31:57.307Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.309Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:31:57.317Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.318Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:31:57.320Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.324Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:31:57.331Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.332Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:31:57.372Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.373Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:31:57.377Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.378Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:31:57.390Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:31:57.391Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:35:18.576Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.578Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:35:18.637Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.638Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:35:18.650Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.651Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:35:18.662Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.663Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:35:18.666Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.667Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:35:18.709Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.710Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:35:18.715Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.716Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:35:18.721Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:35:18.722Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:40:10.655Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:40:10.656Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:40:10.697Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:40:10.698Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:40:10.703Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:40:10.704Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:40:10.710Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:40:10.711Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:43:02.075Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:43:02.076Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:43:02.122Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:43:02.123Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:52:50.294Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:52:55.029Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:52:55.030Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:52:55.092Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:52:55.093Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:52:55.106Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:52:55.108Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:54:08.081Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:54:08.082Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:54:08.168Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:54:08.169Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T14:54:08.176Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:54:08.178Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T14:54:08.191Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T14:54:08.192Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:44:41.787Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:44:41.790Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:44:41.852Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:44:41.854Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:44:41.861Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:44:41.863Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:44:41.873Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:44:41.875Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:50:19.144Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:50:19.147Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:50:19.192Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:50:19.194Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:50:19.201Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:50:19.203Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:50:19.211Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:50:19.212Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:50:48.483Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:51:08.774Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:51:08.776Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:51:08.836Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:51:08.837Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:51:08.852Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:51:08.854Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:55:13.226Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:55:13.230Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:55:13.287Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:55:13.289Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T15:55:13.298Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:55:13.301Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:55:13.313Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:55:13.314Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:55:25.830Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:55:30.398Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:55:30.400Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:56:04.376Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:56:09.089Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:56:09.092Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:56:28.984Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:56:34.069Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:56:34.071Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T15:58:01.052Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:58:05.748Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T15:58:05.750Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:11:29.517Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:29.522Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:11:29.597Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:29.598Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:11:29.610Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:29.612Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:11:29.623Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:29.625Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:11:39.646Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:39.649Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:11:39.705Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:39.706Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:11:39.719Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:39.721Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:11:39.730Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:11:39.732Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:12:36.850Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:12:36.854Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:12:36.906Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:12:36.907Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:12:36.917Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:12:36.918Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:12:36.928Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:12:36.931Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:13:27.850Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:13:34.634Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:13:34.636Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:16:01.073Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:01.076Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:16:01.138Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:01.140Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:16:01.150Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:01.152Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:16:01.162Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:01.166Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:16:08.297Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:08.300Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:16:08.311Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:08.313Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:16:08.324Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:08.327Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:16:08.338Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:16:08.340Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:50:18.309Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:50:18.313Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:50:18.390Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:50:18.392Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T16:50:18.427Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:50:18.431Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T16:50:18.441Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T16:50:18.443Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:01:54.658Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:01:54.659Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:01:54.741Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:01:54.743Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:01:54.755Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:01:54.757Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:01:54.767Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:01:54.769Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:03:47.733Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:03:55.221Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:03:55.228Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:05:22.764Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:22.766Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:05:22.817Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:22.820Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:05:22.826Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:22.828Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:05:22.836Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:22.838Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:05:39.227Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:45.417Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:45.420Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:05:45.529Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:45.530Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:05:45.548Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:05:45.550Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:06:42.782Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:06:47.762Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:06:47.764Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:28:04.066Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:04.072Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:28:04.287Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:04.288Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:28:04.294Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:04.295Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:28:04.306Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:04.307Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:28:35.978Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:35.980Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:28:36.068Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:36.071Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:28:44.053Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:44.054Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:28:44.063Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:44.064Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:28:44.072Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:44.074Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:28:44.083Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:28:44.085Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:42:19.849Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:19.851Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:42:19.897Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:19.899Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:42:19.905Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:19.908Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:42:19.916Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:19.917Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:42:34.610Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:34.615Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:42:34.776Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:34.777Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:42:34.788Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:34.790Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:42:34.798Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:42:34.799Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:49:26.773Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:49:26.774Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:49:26.838Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:49:26.839Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:49:47.775Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:49:47.777Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:49:47.827Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:49:47.828Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:50:01.544Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:50:01.546Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:50:01.588Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:50:01.589Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:50:17.774Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:50:17.775Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:50:17.817Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:50:17.819Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:50:33.695Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:50:33.697Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:50:33.740Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:50:33.741Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:51:43.746Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:51:43.748Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:51:43.803Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:51:43.804Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:51:51.751Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:51:51.753Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:51:51.763Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:51:51.765Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:51:57.744Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:51:57.746Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:51:57.759Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:51:57.760Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:53:30.745Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:53:30.747Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:53:30.789Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:53:30.790Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:55:58.729Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:55:58.730Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:55:58.775Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:55:58.777Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:56:15.563Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:56:15.565Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:56:15.608Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:56:15.609Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T17:59:02.705Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:59:02.707Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T17:59:02.759Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T17:59:02.760Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:06:31.658Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:06:31.659Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:06:31.717Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:06:31.718Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:06:31.725Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:06:31.726Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:06:31.732Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:06:31.735Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:08:15.467Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:08:15.468Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:08:15.511Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:08:15.512Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:14:06.621Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:14:06.622Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:14:06.687Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:14:06.688Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:16:46.627Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:16:46.630Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:16:46.689Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:16:46.690Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:18:52.603Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:18:52.604Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:18:52.648Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:18:52.649Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:20:01.446Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:20:01.447Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:20:01.488Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:20:01.489Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:20:40.601Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:20:40.602Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:20:40.648Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:20:40.649Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:21:43.594Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:21:43.596Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:21:43.750Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:21:43.751Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:22:25.583Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:22:25.584Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:22:25.652Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:22:25.653Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:22:43.526Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:22:43.527Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:22:43.569Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:22:43.570Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:23:08.422Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:23:08.423Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:23:08.467Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:23:08.468Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:23:45.771Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:23:45.773Z","level":"debug","message":"Saving prediction request","context":{"userId":1}}
+{"timestamp":"2026-03-11T18:23:45.826Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:23:45.827Z","level":"debug","message":"Fetching predictions","context":{"userId":1,"limit":50,"offset":0}}
+{"timestamp":"2026-03-11T18:23:45.840Z","level":"debug","message":"User 1 authenticated successfully"}
+{"timestamp":"2026-03-11T18:23:45.841Z","level":"debug","message":"Fetching user stats","context":{"userId":1}}

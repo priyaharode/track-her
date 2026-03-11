@@ -1,113 +1,191 @@
-import { Router, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import pool from '../db';
+import { Pool } from 'pg';
+import { generateToken } from '../utils/jwt.js';
+import { validateAuthInput, sanitizeString } from '../utils/validation.js';
+import { logger } from '../utils/logger.js';
 
-const router = Router();
+const router = express.Router();
 
-// ADD THIS DEBUG LINE
-console.log('Database Config:', {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD ? '***' : 'UNDEFINED',
+// Database connection
+const pool = new Pool({
+  host: 'localhost',
+  port: 5432,
+  database: 'trackher_db',
+  user: 'postgres',
+  password: 'Ujwal@12345',
 });
 
-// Signup
+/**
+ * POST /api/auth/signup
+ * Create new user account and return JWT token
+ */
 router.post('/signup', async (req: Request, res: Response) => {
   try {
-    const { email, password, firstName, lastName, age } = req.body;
+    const { email, password } = req.body;
 
     // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email and password required' });
+    const validation = validateAuthInput(email, password);
+    if (!validation.isValid) {
+      logger.warn('Invalid signup input', { errors: validation.errors });
+      return res.status(400).json({ 
+        error: 'Validation failed',
+        details: validation.errors 
+      });
     }
 
-    // Check if user exists
-    const userCheck = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (userCheck.rows.length > 0) {
-      return res.status(400).json({ success: false, message: 'User already exists' });
+    // Sanitize email
+    const sanitizedEmail = sanitizeString(email).toLowerCase();
+
+    logger.info('Signup attempt', { email: sanitizedEmail });
+
+    // Check if user already exists
+    const existingUser = await pool.query(
+      'SELECT id FROM users WHERE email = $1',
+      [sanitizedEmail]
+    );
+
+    if (existingUser.rows.length > 0) {
+      logger.warn('Signup failed - user already exists', { email: sanitizedEmail });
+      return res.status(409).json({ 
+        error: 'User already exists',
+        message: 'Email is already registered'
+      });
     }
 
     // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create user
     const result = await pool.query(
-      'INSERT INTO users (email, password, firstName, lastName, age) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, firstName, lastName',
-      [email, hashedPassword, firstName || '', lastName || '', age || null]
+      'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
+      [sanitizedEmail, hashedPassword]
     );
 
     const user = result.rows[0];
 
-    // Generate JWT - FIXED
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET || 'secret_key_change_in_production',
-      { expiresIn: '7d' }
-    );
+    // Generate JWT token
+    const token = generateToken(user.id, user.email);
 
-    res.json({
-      success: true,
-      message: 'User created successfully',
-      user: { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName },
-      token,
+    logger.info('✅ User signed up successfully', { 
+      userId: user.id,
+      email: user.email 
     });
-  } catch (error) {
-    console.error('Signup error:', error);
-    res.status(500).json({ success: false, message: 'Server error' });
+
+    res.status(201).json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email
+      },
+      token
+    });
+  } catch (err) {
+    logger.error('Signup error', err instanceof Error ? err : new Error(String(err)));
+    res.status(500).json({ 
+      error: 'Signup failed',
+      message: 'An error occurred during signup'
+    });
   }
 });
 
-// Login
+/**
+ * POST /api/auth/login
+ * Authenticate user and return JWT token
+ */
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
     // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email and password required' });
+    const validation = validateAuthInput(email, password);
+    if (!validation.isValid) {
+      logger.warn('Invalid login input', { errors: validation.errors });
+      return res.status(400).json({ 
+        error: 'Validation failed',
+        details: validation.errors 
+      });
     }
 
+    // Sanitize email
+    const sanitizedEmail = sanitizeString(email).toLowerCase();
+
+    logger.info('Login attempt', { email: sanitizedEmail });
+
     // Find user
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await pool.query(
+      'SELECT id, email, password FROM users WHERE email = $1',
+      [sanitizedEmail]
+    );
+
     if (result.rows.length === 0) {
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+      logger.warn('Login failed - user not found', { email: sanitizedEmail });
+      return res.status(401).json({ 
+        error: 'Invalid credentials',
+        message: 'Email or password is incorrect'
+      });
     }
 
     const user = result.rows[0];
 
-    // Check password
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    // Verify password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      logger.warn('Login failed - password mismatch', { email: sanitizedEmail });
+      return res.status(401).json({ 
+        error: 'Invalid credentials',
+        message: 'Email or password is incorrect'
+      });
     }
 
-    // Generate JWT - FIXED
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET || 'secret_key_change_in_production',
-      { expiresIn: '7d' }
-    );
+    // Generate JWT token
+    const token = generateToken(user.id, user.email);
+
+    logger.info('✅ User logged in successfully', { 
+      userId: user.id,
+      email: user.email 
+    });
 
     res.json({
       success: true,
-      message: 'Login successful',
-      user: { 
-        id: user.id, 
-        email: user.email, 
-        firstName: user.firstName, 
-        lastName: user.lastName,
-        age: user.age 
+      user: {
+        id: user.id,
+        email: user.email
       },
-      token,
+      token
     });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ success: false, message: 'Server error' });
+  } catch (err) {
+    logger.error('Login error', err instanceof Error ? err : new Error(String(err)));
+    res.status(500).json({ 
+      error: 'Login failed',
+      message: 'An error occurred during login'
+    });
   }
 });
 
-export default router;
+/**
+ * GET /api/auth/me
+ * Get current user info (requires authentication)
+ */
+router.get('/me', async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Token verification is done by middleware in actual usage
+    // This is just for reference
+    
+    res.json({
+      message: 'Authenticated endpoint - middleware will validate token'
+    });
+  } catch (err) {
+    logger.error('Auth check error', err instanceof Error ? err : new Error(String(err)));
+    res.status(500).json({ error: 'Auth check failed' });
+  }
+});
+
+export { router as authRouter };

@@ -1,0 +1,9 @@
+{"timestamp":"2026-03-11T14:02:16.366Z","level":"warn","message":"Missing or invalid authorization header"}
+{"timestamp":"2026-03-11T14:04:02.899Z","level":"warn","message":"Missing or invalid authorization header"}
+{"timestamp":"2026-03-11T15:55:30.402Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-11T15:56:09.094Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-11T15:56:34.073Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-11T15:58:05.753Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-11T16:13:34.637Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-11T17:03:55.237Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-11T17:06:47.769Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}

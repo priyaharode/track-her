@@ -1,0 +1,253 @@
+{"timestamp":"2026-03-11T13:38:38.158Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T13:38:38.167Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T13:40:07.141Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T13:40:07.146Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T13:40:07.258Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T13:40:19.509Z","level":"info","message":"Signup attempt","context":{"email":"priya@test.com"}}
+{"timestamp":"2026-03-11T13:40:19.908Z","level":"info","message":"✅ User signed up successfully","context":{"userId":9,"email":"priya@test.com"}}
+{"timestamp":"2026-03-11T13:41:35.125Z","level":"info","message":"Login attempt","context":{"email":"shelly@gmail.com"}}
+{"timestamp":"2026-03-11T13:41:35.436Z","level":"info","message":"✅ User logged in successfully","context":{"userId":5,"email":"shelly@gmail.com"}}
+{"timestamp":"2026-03-11T13:41:35.622Z","level":"info","message":"Predictions loaded","context":{"userId":5,"count":18}}
+{"timestamp":"2026-03-11T13:41:35.673Z","level":"info","message":"Predictions loaded","context":{"userId":5,"count":18}}
+{"timestamp":"2026-03-11T13:41:52.640Z","level":"info","message":"Getting ML predictions","context":{"userId":5,"featureCount":20}}
+{"timestamp":"2026-03-11T13:46:37.273Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T13:46:37.277Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T13:46:37.387Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T13:47:10.044Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T13:47:10.051Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T13:47:10.182Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T13:47:18.555Z","level":"info","message":"Stats calculated","context":{"userId":5,"totalPredictions":"18"}}
+{"timestamp":"2026-03-11T13:47:18.580Z","level":"info","message":"Stats calculated","context":{"userId":5,"totalPredictions":"18"}}
+{"timestamp":"2026-03-11T13:49:44.040Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T13:49:44.045Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T13:49:44.146Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T13:49:59.835Z","level":"info","message":"Getting ML predictions","context":{"userId":5,"featureCount":20}}
+{"timestamp":"2026-03-11T14:00:33.351Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T14:00:33.362Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T14:00:49.771Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T14:00:49.774Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T14:00:49.888Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T14:05:59.267Z","level":"info","message":"Getting ML predictions","context":{"userId":5,"featureCount":20}}
+{"timestamp":"2026-03-11T14:06:11.551Z","level":"info","message":"✅ ML predictions successful","context":{"userId":5,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T14:06:11.594Z","level":"info","message":"💾 Saving prediction to database","context":{"userId":5,"cycleLength":25,"stressLevel":5}}
+{"timestamp":"2026-03-11T14:06:11.713Z","level":"info","message":"✅ Prediction saved successfully","context":{"userId":5,"predictionId":33}}
+{"timestamp":"2026-03-11T14:06:11.752Z","level":"info","message":"Predictions loaded","context":{"userId":5,"count":19}}
+{"timestamp":"2026-03-11T14:06:11.817Z","level":"info","message":"Stats calculated","context":{"userId":5,"totalPredictions":"19"}}
+{"timestamp":"2026-03-11T14:08:53.244Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T14:08:53.252Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T14:08:53.388Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T14:10:08.363Z","level":"info","message":"Signup attempt","context":{"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T14:10:08.751Z","level":"info","message":"✅ User signed up successfully","context":{"userId":1,"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T14:10:08.936Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":0}}
+{"timestamp":"2026-03-11T14:10:08.960Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":0}}
+{"timestamp":"2026-03-11T14:10:08.983Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"0"}}
+{"timestamp":"2026-03-11T14:10:09.000Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"0"}}
+{"timestamp":"2026-03-11T14:10:53.610Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T14:11:05.012Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T14:11:05.041Z","level":"info","message":"💾 Saving prediction to database","context":{"userId":1,"cycleLength":25,"stressLevel":6}}
+{"timestamp":"2026-03-11T14:11:05.146Z","level":"info","message":"✅ Prediction saved successfully","context":{"userId":1,"predictionId":1}}
+{"timestamp":"2026-03-11T14:11:05.178Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:11:05.214Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:26:42.142Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:26:42.154Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:26:42.163Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:26:42.173Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:31:57.303Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:31:57.314Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:31:57.325Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:31:57.334Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:31:57.369Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:31:57.380Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:31:57.384Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:31:57.393Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:35:18.632Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:35:18.641Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:35:18.654Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:35:18.670Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:35:18.705Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:35:18.712Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:35:18.718Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:35:18.724Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:40:10.693Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:40:10.700Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:40:10.707Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:40:10.714Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:43:02.113Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":1}}
+{"timestamp":"2026-03-11T14:43:02.125Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"1"}}
+{"timestamp":"2026-03-11T14:52:50.297Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T14:52:55.018Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T14:52:55.032Z","level":"info","message":"💾 Saving prediction to database","context":{"userId":1,"cycleLength":25,"stressLevel":6}}
+{"timestamp":"2026-03-11T14:52:55.083Z","level":"info","message":"✅ Prediction saved successfully","context":{"userId":1,"predictionId":2}}
+{"timestamp":"2026-03-11T14:52:55.099Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T14:52:55.111Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T14:54:08.164Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T14:54:08.172Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T14:54:08.187Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T14:54:08.195Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T15:44:41.320Z","level":"info","message":"Login attempt","context":{"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T15:44:41.746Z","level":"info","message":"✅ User logged in successfully","context":{"userId":1,"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T15:44:41.846Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T15:44:41.858Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T15:44:41.868Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T15:44:41.878Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T15:50:18.932Z","level":"info","message":"Login attempt","context":{"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T15:50:19.120Z","level":"info","message":"✅ User logged in successfully","context":{"userId":1,"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T15:50:19.188Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T15:50:19.198Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":2}}
+{"timestamp":"2026-03-11T15:50:19.206Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T15:50:19.215Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"2"}}
+{"timestamp":"2026-03-11T15:50:48.486Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T15:51:08.780Z","level":"info","message":"💾 Saving prediction to database","context":{"userId":1,"cycleLength":27,"stressLevel":6}}
+{"timestamp":"2026-03-11T15:51:08.828Z","level":"info","message":"✅ Prediction saved successfully","context":{"userId":1,"predictionId":3}}
+{"timestamp":"2026-03-11T15:51:08.842Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T15:51:08.858Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T15:54:37.989Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T15:54:37.994Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T15:54:38.084Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T15:55:13.280Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T15:55:13.294Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T15:55:13.306Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T15:55:13.320Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T15:55:25.833Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T15:55:30.386Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T15:55:56.006Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T15:55:56.007Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T15:55:56.051Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T15:56:04.380Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T15:56:09.074Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T15:56:28.987Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T15:56:34.058Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T15:57:55.660Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T15:57:55.662Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T15:57:55.703Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T15:58:01.056Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T15:58:05.734Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T16:11:29.591Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:11:29.605Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:11:29.618Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:11:29.629Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:11:39.700Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:11:39.711Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:11:39.725Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:11:39.737Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:12:36.901Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:12:36.911Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:12:36.923Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:12:36.934Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:13:27.853Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T16:13:34.615Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T16:14:56.953Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T16:14:56.955Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T16:14:57.002Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T16:16:01.128Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:16:01.145Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:16:01.157Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:16:01.171Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:16:07.946Z","level":"info","message":"Login attempt","context":{"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T16:16:08.255Z","level":"info","message":"✅ User logged in successfully","context":{"userId":1,"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T16:16:08.306Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:16:08.319Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:16:08.331Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:16:08.344Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:50:18.383Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:50:18.397Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T16:50:18.437Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T16:50:18.446Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T17:01:54.359Z","level":"info","message":"Login attempt","context":{"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T17:01:54.618Z","level":"info","message":"✅ User logged in successfully","context":{"userId":1,"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T17:01:54.734Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T17:01:54.748Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T17:01:54.762Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T17:01:54.772Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T17:03:47.737Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T17:03:55.201Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T17:05:22.812Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T17:05:22.823Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":3}}
+{"timestamp":"2026-03-11T17:05:22.831Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T17:05:22.841Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"3"}}
+{"timestamp":"2026-03-11T17:05:39.229Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T17:05:45.400Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T17:05:45.424Z","level":"info","message":"💾 Saving prediction to database","context":{"userId":1,"cycleLength":27,"stressLevel":6}}
+{"timestamp":"2026-03-11T17:05:45.518Z","level":"info","message":"✅ Prediction saved successfully","context":{"userId":1,"predictionId":4}}
+{"timestamp":"2026-03-11T17:05:45.538Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:05:45.554Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:06:42.785Z","level":"info","message":"Getting ML predictions","context":{"userId":1,"featureCount":20}}
+{"timestamp":"2026-03-11T17:06:47.745Z","level":"info","message":"✅ ML predictions successful","context":{"userId":1,"cycleLength":25.24420338983051}}
+{"timestamp":"2026-03-11T17:28:04.280Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:28:04.291Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:28:04.301Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:28:04.310Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:28:36.036Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:28:36.075Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:28:44.058Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:28:44.069Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:28:44.077Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:28:44.090Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:41:35.271Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T17:41:35.273Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T17:41:35.316Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T17:41:40.902Z","level":"info","message":"🚀 Server running on port 5000"}
+{"timestamp":"2026-03-11T17:41:40.904Z","level":"info","message":"Environment: development"}
+{"timestamp":"2026-03-11T17:41:40.947Z","level":"info","message":"✅ Database connection successful"}
+{"timestamp":"2026-03-11T17:42:19.891Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:42:19.902Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:42:19.912Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:42:19.919Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:42:34.772Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:42:34.784Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:42:34.795Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:42:34.807Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:49:26.826Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:49:26.843Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:49:47.818Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:49:47.830Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:50:01.582Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:50:01.592Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:50:17.809Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:50:17.821Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:50:33.732Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:50:33.743Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:51:43.792Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:51:43.806Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:51:51.755Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:51:51.767Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:51:57.748Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:51:57.762Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:53:30.780Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:53:30.792Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:55:58.767Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:55:58.779Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:56:15.600Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:56:15.611Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T17:59:02.749Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T17:59:02.763Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:05:41.601Z","level":"info","message":"Login attempt","context":{"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T18:05:41.749Z","level":"info","message":"✅ User logged in successfully","context":{"userId":1,"email":"priyaaharodee@gmail.com"}}
+{"timestamp":"2026-03-11T18:06:31.713Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:06:31.720Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:06:31.729Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:06:31.737Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:08:15.504Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:08:15.514Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:14:06.678Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:14:06.690Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:16:46.680Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:16:46.693Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:18:52.638Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:18:52.652Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:20:01.482Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:20:01.492Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:20:40.638Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:20:40.651Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:21:43.740Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:21:43.754Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:22:25.639Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:22:25.655Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:22:43.562Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:22:43.572Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:23:08.460Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":4}}
+{"timestamp":"2026-03-11T18:23:08.470Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"4"}}
+{"timestamp":"2026-03-11T18:23:45.774Z","level":"info","message":"💾 Saving prediction to database","context":{"userId":1,"cycleLength":27,"stressLevel":2}}
+{"timestamp":"2026-03-11T18:23:45.818Z","level":"info","message":"✅ Prediction saved successfully","context":{"userId":1,"predictionId":5}}
+{"timestamp":"2026-03-11T18:23:45.832Z","level":"info","message":"Predictions loaded","context":{"userId":1,"count":5}}
+{"timestamp":"2026-03-11T18:23:45.843Z","level":"info","message":"Stats calculated","context":{"userId":1,"totalPredictions":"5"}}

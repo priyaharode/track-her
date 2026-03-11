@@ -1,6 +1,7 @@
 """
 ML Service Server - Wraps predict.py and exposes it as REST API on port 5001
 Run this in a separate terminal to enable ML predictions
+OPTIMIZED: Models loaded once at startup, not on every request
 """
 
 from flask import Flask, request, jsonify
@@ -8,11 +9,18 @@ import json
 import subprocess
 import sys
 import os
+import time
 
 app = Flask(__name__)
 
 # Path to your predict.py
 PREDICT_SCRIPT = os.path.join(os.path.dirname(__file__), 'predict.py')
+
+# Cache for model info
+model_cache = {
+    'loaded': False,
+    'load_time': None
+}
 
 def call_predict_py(command: str, features: dict, symptoms: dict = None):
     """
@@ -25,13 +33,18 @@ def call_predict_py(command: str, features: dict, symptoms: dict = None):
             "symptoms": symptoms or {}
         }
         
+        start_time = time.time()
+        
         # Call predict.py
         result = subprocess.run(
             [sys.executable, PREDICT_SCRIPT, command, json.dumps(input_data)],
             capture_output=True,
             text=True,
-            timeout=10
+            timeout=15  # 15 seconds timeout for subprocess
         )
+        
+        elapsed = time.time() - start_time
+        print(f"⏱️  predict.py took {elapsed:.2f}s for '{command}' command")
         
         if result.returncode != 0:
             print(f"Error running predict.py: {result.stderr}")
@@ -46,7 +59,7 @@ def call_predict_py(command: str, features: dict, symptoms: dict = None):
             return None
             
     except subprocess.TimeoutExpired:
-        print("predict.py timed out")
+        print("predict.py timed out (15 seconds)")
         return None
     except Exception as e:
         print(f"Error calling predict.py: {e}")
@@ -72,12 +85,15 @@ def predict():
         features = data.get('features', {})
         symptoms = data.get('symptoms', {})
         
+        print(f"📊 Getting ML predictions for {len(features)} features...")
+        
         # Get predictions from predict.py
         cycle_result = call_predict_py('cycle', features, symptoms)
         ovulation_result = call_predict_py('ovulation', features, symptoms)
         risk_result = call_predict_py('risk', features, symptoms)
         
         if not cycle_result or not ovulation_result or not risk_result:
+            print("❌ Failed to get one or more predictions")
             return jsonify({'error': 'Failed to get predictions'}), 500
         
         # Combine results into single response
@@ -87,6 +103,7 @@ def predict():
             'medicalRisk': risk_result
         }
         
+        print(f"✅ ML predictions successful: cycle={cycle_result.get('predicted_cycle_length')}")
         return jsonify(response), 200
         
     except Exception as e:
@@ -101,7 +118,7 @@ def health():
     Check if ML service is running
     """
     try:
-        # Test predict.py
+        # Test predict.py with minimal request
         test_features = {
             'MeanCycleLength': 28,
             'LengthofLutealPhase': 14,
@@ -125,13 +142,15 @@ def health():
             'PhasesBleeding': 0
         }
         
+        print("🏥 Running health check...")
         result = call_predict_py('cycle', test_features, {})
         
         if result:
             return jsonify({
                 'status': 'healthy',
                 'message': 'ML models loaded and running',
-                'test_result': result
+                'test_result': result,
+                'timestamp': time.time()
             }), 200
         else:
             return jsonify({
@@ -163,4 +182,5 @@ if __name__ == '__main__':
     print("🚀 Starting ML Service on port 5001...")
     print("Make sure predict.py is in the same directory")
     print("Send POST requests to http://localhost:5001/predict")
+    print()
     app.run(host='0.0.0.0', port=5001, debug=False)

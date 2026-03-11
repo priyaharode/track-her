@@ -1,53 +1,56 @@
-import express, { Express } from 'express';
+import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
+import { authRouter } from './routes/auth.js';
 import { predictionsRouter } from './routes/predictions.js';
+import { authenticate } from './middleware/auth-middleware.js';
+import { logger } from './utils/logger.js';
 
-dotenv.config(); // Load .env file
+dotenv.config();
 
-const app: Express = express();
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials: true,
+app.use(cors({ 
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173', 
+  credentials: true 
 }));
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/predictions', predictionsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/predictions', authenticate, predictionsRouter);
 
-app.get('/api/stats', async (req, res) => {
-  // This will be handled by predictions router
-  res.redirect('/api/predictions/stats');
+// Alias for Dashboard compatibility
+app.get('/api/stats', authenticate, async (req: any, res) => {
+  // This will be handled by the predictions router
+  // Just redirect internally
+  res.redirect(301, '/api/predictions/stats');
 });
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Backend running', timestamp: new Date() });
+  res.json({ 
+    status: 'Backend running',
+    timestamp: new Date(),
+    environment: process.env.NODE_ENV 
+  });
 });
 
-export function startServer() {
+// Error handling middleware (at the end)
+app.use((err: any, req: any, res: any, next: any) => {
+  logger.error('Unhandled error', err);
+  res.status(500).json({ 
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'An error occurred'
+  });
+});
+
+function startServer() {
   app.listen(PORT, () => {
-    console.log(`\n${'='.repeat(60)}`);
-    console.log(`✅ TrackHER Backend with Auth + ML Predictions`);
-    console.log(`${'='.repeat(60)}`);
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`\n📍 Auth routes:`);
-    console.log(`   POST /api/auth/signup`);
-    console.log(`   POST /api/auth/login`);
-    console.log(`\n🤖 Prediction routes:`);
-    console.log(`   POST /api/predictions/full`);
-    console.log(`   POST /api/predictions/cycle`);
-    console.log(`   POST /api/predictions/ovulation`);
-    console.log(`   POST /api/predictions/risk`);
-    console.log(`   POST /api/predictions/health-check`);
-    console.log(`\n💚 Health check:`);
-    console.log(`   GET /api/health`);
-    console.log(`${'='.repeat(60)}\n`);
+    logger.info(`🚀 Server running on port ${PORT}`);
+    logger.info(`Environment: ${process.env.NODE_ENV}`);
   });
 }
 
