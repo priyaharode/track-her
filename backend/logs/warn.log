@@ -7,3 +7,8 @@
 {"timestamp":"2026-03-11T16:13:34.637Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
 {"timestamp":"2026-03-11T17:03:55.237Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
 {"timestamp":"2026-03-11T17:06:47.769Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Last period date cannot be in the future"}]}}
+{"timestamp":"2026-03-12T08:20:11.865Z","level":"warn","message":"Signup failed - user already exists","context":{"email":"priyaharode@gmail.com"}}
+{"timestamp":"2026-03-13T17:09:33.074Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Invalid date format. Use YYYY-MM-DD"}]}}
+{"timestamp":"2026-03-13T17:09:38.538Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Invalid date format. Use YYYY-MM-DD"}]}}
+{"timestamp":"2026-03-13T17:09:43.605Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Invalid date format. Use YYYY-MM-DD"}]}}
+{"timestamp":"2026-03-13T17:09:51.066Z","level":"warn","message":"Invalid prediction input","context":{"userId":1,"errors":[{"field":"lastPeriodDate","message":"Invalid date format. Use YYYY-MM-DD"}]}}

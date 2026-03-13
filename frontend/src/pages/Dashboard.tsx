@@ -40,7 +40,9 @@ export default function Dashboard() {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState<'calendar' | 'trends' | 'form'>('calendar');
+  const [activeTab, setActiveTab] = useState<'calendar' | 'trends'>('calendar');
+  const [showLogModal, setShowLogModal] = useState(false);
+  const [selectedLogDate, setSelectedLogDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
   const [lastPeriodDate, setLastPeriodDate] = useState('2026-02-12');
   const [cycleLength, setCycleLength] = useState(27);
@@ -200,8 +202,8 @@ export default function Dashboard() {
       {/* Header */}
       <header style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ margin: '0 0 4px 0', fontSize: '28px', fontWeight: '700', color: '#8b1a1a' }}>HER Dashboard</h1>
-          <p style={{ margin: '0', color: '#666', fontSize: '14px' }}>Welcome back pretty woman! 🎀</p>
+          <h1 style={{ margin: '0 0 4px 0', fontSize: '28px', fontWeight: '700', color: '#8b1a1a' }}>HER Dashboard🎀</h1>
+          <p style={{ margin: '0', color: '#666', fontSize: '14px' }}>Welcome back pretty woman!</p>
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <span style={{ color: '#666' }}>{user?.email}</span>
@@ -230,7 +232,7 @@ export default function Dashboard() {
             marginBottom: '-2px'
           }}
         >
-          📅 Insights   
+          📅 Calendar
         </button>
         <button
           onClick={() => setActiveTab('trends')}
@@ -248,22 +250,6 @@ export default function Dashboard() {
         >
           📈 Trends ({predictions.length})
         </button>
-        <button
-          onClick={() => setActiveTab('form')}
-          style={{
-            padding: '12px 20px',
-            border: 'none',
-            background: 'transparent',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: activeTab === 'form' ? '600' : '500',
-            color: activeTab === 'form' ? '#8b1a1a' : '#666',
-            borderBottom: activeTab === 'form' ? '3px solid #8b1a1a' : 'none',
-            marginBottom: '-2px'
-          }}
-        >
-          ✏️ Update
-        </button>
       </div>
 
       {/* Alerts */}
@@ -275,13 +261,44 @@ export default function Dashboard() {
         <div>
           {/* Horizontal Layout: Calendar (Left) | Cycle Info + Phases + Stats (Right) */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
-            {/* LEFT COLUMN: Calendar Only */}
-            <div style={{ background: 'white', borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-              <CycleCalendar
-                lastPeriodDate={currentPrediction.lastperioddate}
-                cycleLength={currentPrediction.cyclelength}
-                periodDuration={currentPrediction.periodduration}
-              />
+            {/* LEFT COLUMN: Calendar + Log Button */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              {/* Calendar Card */}
+              <div style={{ background: 'white', borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <CycleCalendar
+                  lastPeriodDate={currentPrediction.lastperioddate}
+                  cycleLength={currentPrediction.cyclelength}
+                  periodDuration={currentPrediction.periodduration}
+                  onDateSelect={(date) => {
+                    setSelectedLogDate(date.toISOString().split('T')[0]);
+                    setShowLogModal(true);
+                  }}
+                />
+                {/* Log Period Button Below Calendar */}
+                <button
+                  onClick={() => {
+                    setSelectedLogDate(new Date().toISOString().split('T')[0]);
+                    setShowLogModal(true);
+                  }}
+                  style={{
+                    width: '100%',
+                    marginTop: '16px',
+                    padding: '12px',
+                    background: 'linear-gradient(135deg, #8b1a1a 0%, #a52c3a 100%)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    transition: 'opacity 0.2s'
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.9')}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+                >
+                  📝 Log Period
+                </button>
+              </div>
             </div>
 
             {/* RIGHT COLUMN: Current Cycle + Phases + Statistics */}
@@ -307,20 +324,20 @@ export default function Dashboard() {
                 return (
                   <>
                     {/* Current Cycle Card */}
-                    <div style={{ background: 'linear-gradient(135deg, #8b1a1a 0%, #a52c3a 100%)', borderRadius: '12px', padding: '24px', color: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                      <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px' }}>Current Cycle</h3>
+                    <div style={{ background: '#8b1a1a', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                      <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#ffffff' }}>Current Cycle</h3>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
                         <div>
-                          <div style={{ fontSize: '12px', marginBottom: '4px' }}>Next Period</div>
-                          <div style={{ fontSize: '18px', fontWeight: '700' }}>{formatDate(currentPrediction.nextperioddate)}</div>
+                          <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '4px' }}>📅 Next Period</div>
+                          <div style={{ fontSize: '18px', fontWeight: '700', color: '#ffffff' }}>{formatDate(currentPrediction.nextperioddate)}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '12px', marginBottom: '4px' }}>Ovulation</div>
-                          <div style={{ fontSize: '18px', fontWeight: '700'}}>{daysUntilOvulation} days</div>
+                          <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '4px' }}>💕 Ovulation</div>
+                          <div style={{ fontSize: '18px', fontWeight: '700', color: '#ffffff' }}>{daysUntilOvulation} days</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '12px', marginBottom: '4px' }}>Fertility</div>
-                          <div style={{ fontSize: '18px', fontWeight: '700' }}>{fertilityLabel}</div>
+                          <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '4px' }}>✨ Fertility</div>
+                          <div style={{ fontSize: '18px', fontWeight: '700', color: '#ffffff' }}>{fertilityLabel}</div>
                         </div>
                       </div>
                     </div>
@@ -438,122 +455,323 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* FORM TAB */}
-      {activeTab === 'form' && (
+      {/* TRENDS TAB */}
+      {activeTab === 'trends' && (
         <div>
-          <form onSubmit={handleSubmit} style={{ maxWidth: '600px', background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <h3 style={{ marginBottom: '24px' }}>Update Your Health Profile</h3>
-
-            <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ marginBottom: '16px' }}>📅 Period Information</h4>
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Last Period Date</label>
-                <input
-                  type="date"
-                  value={lastPeriodDate}
-                  onChange={(e) => setLastPeriodDate(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #d1d5db', boxSizing: 'border-box' }}
-                  required
-                />
+          <h3>📈 Your Health Trends</h3>
+          {trendData.length > 0 ? (
+            <>
+              <div style={{ background: 'white', borderRadius: '12px', padding: '20px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <h4 style={{ marginBottom: '16px' }}>⚡ PMS Risk Trend</h4>
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart data={trendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="pms" stroke="#8b1a1a" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Cycle Length: {cycleLength}d</label>
-                  <input
-                    type="range"
-                    min="21"
-                    max="35"
-                    value={cycleLength}
-                    onChange={(e) => setCycleLength(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Duration: {periodDuration}d</label>
-                  <input
-                    type="range"
-                    min="3"
-                    max="7"
-                    value={periodDuration}
-                    onChange={(e) => setPeriodDuration(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                  />
-                </div>
+              <div style={{ background: 'white', borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <h4 style={{ marginBottom: '16px' }}>😰 Stress Level Trend</h4>
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart data={trendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0, 10]} />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="stress" stroke="#a52c3a" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
-            </div>
+            </>
+          ) : (
+            <p>No trend data yet</p>
+          )}
+        </div>
+      )}
 
-            <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ marginBottom: '16px' }}>💅 Lifestyle</h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Stress: {stressLevel}/10</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={stressLevel}
-                    onChange={(e) => setStressLevel(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Sleep: {sleepHours}h</label>
-                  <input
-                    type="range"
-                    min="4"
-                    max="12"
-                    step="0.5"
-                    value={sleepHours}
-                    onChange={(e) => setSleepHours(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-              </div>
+      {/* MODAL: Log Period Form */}
+      {showLogModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            
+            // Calculate dates based on selected log date
+            const nextPeriodDate = new Date(selectedLogDate);
+            nextPeriodDate.setDate(nextPeriodDate.getDate() + cycleLength);
+            const nextPeriodStr = nextPeriodDate.toISOString().split('T')[0];
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Mood: {moodLevel}/10</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={moodLevel}
-                    onChange={(e) => setMoodLevel(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Energy: {energyLevel}/10</label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={energyLevel}
-                    onChange={(e) => setEnergyLevel(Number(e.target.value))}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-              </div>
-            </div>
+            const ovulationDate = new Date(selectedLogDate);
+            ovulationDate.setDate(ovulationDate.getDate() + Math.round(cycleLength / 2));
+            const ovulationStr = ovulationDate.toISOString().split('T')[0];
 
+            const lastPeriod = new Date(selectedLogDate);
+            const today = new Date();
+            const timeDiff = today.getTime() - lastPeriod.getTime();
+            const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+            const currentCycleDay = (daysDiff % cycleLength) + 1;
+
+            const daysBeforePeriod = cycleLength - currentCycleDay;
+            let pmsLikelihood = 0;
+            if (daysBeforePeriod <= 7 && daysBeforePeriod > 0) {
+              pmsLikelihood = (7 - daysBeforePeriod) / 7;
+            }
+            pmsLikelihood += stressLevel * 0.02;
+            pmsLikelihood -= sleepHours * 0.01;
+            pmsLikelihood = Math.max(0, Math.min(1, pmsLikelihood));
+
+            // Send to backend
+            const sendData = async () => {
+              setSubmitLoading(true);
+              try {
+                const saveRes = await fetch('http://localhost:5000/api/predictions/save', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                  },
+                  body: JSON.stringify({
+                    lastPeriodDate: selectedLogDate,
+                    cycleLength,
+                    periodDuration,
+                    flowIntensity,
+                    stressLevel,
+                    sleepHours,
+                    exerciseDays: 3,
+                    moodLevel,
+                    energyLevel,
+                    nextPeriodDate: nextPeriodStr,
+                    ovulationDate: ovulationStr,
+                    currentCycleDay,
+                    pmsLikelihood
+                  })
+                });
+
+                if (!saveRes.ok) {
+                  const errorData = await saveRes.json();
+                  throw new Error(errorData.error || 'Failed to save');
+                }
+
+                await loadData();
+                setSuccessMessage('✅ Logged successfully!');
+                setShowLogModal(false);
+                setTimeout(() => setSuccessMessage(''), 3000);
+              } catch (err) {
+                setError(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+              } finally {
+                setSubmitLoading(false);
+              }
+            };
+
+            sendData();
+          }} style={{ 
+            background: 'white', 
+            borderRadius: '12px', 
+            padding: '32px', 
+            boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+            maxWidth: '600px',
+            width: '90%',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+          }}>
+            {/* Close Button */}
             <button
-              type="submit"
-              disabled={submitLoading}
+              type="button"
+              onClick={() => setShowLogModal(false)}
               style={{
-                width: '100%',
-                padding: '12px',
-                background: '#8b1a1a',
-                color: 'white',
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'none',
                 border: 'none',
-                borderRadius: '8px',
-                fontWeight: '600',
-                cursor: submitLoading ? 'not-allowed' : 'pointer',
-                opacity: submitLoading ? 0.7 : 1
+                fontSize: '24px',
+                cursor: 'pointer'
               }}
             >
-              {submitLoading ? '⏳ Saving...' : '💾 Save Prediction'}
+              ✕
             </button>
+
+            <h3 style={{ marginBottom: '8px', fontSize: '24px' }}>🌸 How are you feeling today?</h3>
+            <p style={{ color: '#666', marginBottom: '24px', fontSize: '14px' }}>Logging for: <strong>{new Date(selectedLogDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</strong></p>
+
+            {/* Flow Intensity */}
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '12px', fontWeight: '600', fontSize: '14px' }}>🩸 Flow Today</label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+                {['Light', 'Moderate', 'Heavy'].map((intensity) => (
+                  <button
+                    key={intensity}
+                    type="button"
+                    onClick={() => setFlowIntensity(intensity === 'Light' ? 0 : intensity === 'Moderate' ? 1 : 2)}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '8px',
+                      border: '2px solid',
+                      borderColor: flowIntensity === (intensity === 'Light' ? 0 : intensity === 'Moderate' ? 1 : 2) ? '#8b1a1a' : '#e8d5d8',
+                      background: flowIntensity === (intensity === 'Light' ? 0 : intensity === 'Moderate' ? 1 : 2) ? '#faf8f9' : 'white',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {intensity === 'Light' ? '🩸' : intensity === 'Moderate' ? '🩸🩸' : '🩸🩸🩸'}
+                    <div style={{ fontSize: '12px', marginTop: '4px' }}>{intensity}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Symptoms */}
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '12px', fontWeight: '600', fontSize: '14px' }}>💭 Symptoms Today (select all that apply)</label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                {[
+                  { label: 'Cramps', emoji: '😣' },
+                  { label: 'Headache', emoji: '🤕' },
+                  { label: 'Fatigue', emoji: '😴' },
+                  { label: 'Bloating', emoji: '🤰' },
+                  { label: 'Nausea', emoji: '🤢' },
+                  { label: 'Mood Swings', emoji: '😤' },
+                  { label: 'Tender Breasts', emoji: '😩' },
+                  { label: 'Acne', emoji: '😔' },
+                ].map((symptom) => (
+                  <label key={symptom.label} style={{ display: 'flex', alignItems: 'center', padding: '10px', border: '1px solid #e8d5d8', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}>
+                    <input
+                      type="checkbox"
+                      name={`symptom_${symptom.label}`}
+                      defaultChecked={false}
+                      style={{ marginRight: '8px', cursor: 'pointer' }}
+                    />
+                    <span>{symptom.emoji} {symptom.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Mood */}
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '12px', fontWeight: '600', fontSize: '14px' }}>😊 Mood Today</label>
+              <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                {['😢', '😕', '😐', '🙂', '😊'].map((emoji, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setMoodLevel(idx + 1)}
+                    style={{
+                      fontSize: '32px',
+                      background: moodLevel === idx + 1 ? '#e8d5d8' : 'transparent',
+                      border: moodLevel === idx + 1 ? '2px solid #8b1a1a' : 'none',
+                      borderRadius: '50%',
+                      width: '50px',
+                      height: '50px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Energy */}
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '12px', fontWeight: '600', fontSize: '14px' }}>⚡ Energy Level: {energyLevel}/10</label>
+              <input
+                type="range"
+                name="energyLevel"
+                min="1"
+                max="10"
+                value={energyLevel}
+                onChange={(e) => setEnergyLevel(Number(e.target.value))}
+                style={{ width: '100%', cursor: 'pointer' }}
+              />
+            </div>
+
+            {/* Notes */}
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px' }}>📝 Notes (optional)</label>
+              <textarea
+                name="notes"
+                placeholder="Anything else you want to remember about today?"
+                style={{ 
+                  width: '100%', 
+                  padding: '12px', 
+                  borderRadius: '8px', 
+                  border: '1px solid #d1d5db',
+                  fontFamily: 'inherit',
+                  fontSize: '14px',
+                  minHeight: '80px',
+                  resize: 'vertical',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            {/* Hidden Backend Data - MUST have name attributes */}
+            <input type="hidden" name="lastPeriodDate" value={selectedLogDate} />
+            <input type="hidden" name="cycleLength" value={cycleLength} />
+            <input type="hidden" name="periodDuration" value={periodDuration} />
+            <input type="hidden" name="flowIntensity" value={flowIntensity} />
+            <input type="hidden" name="stressLevel" value={stressLevel} />
+            <input type="hidden" name="sleepHours" value={sleepHours} />
+            <input type="hidden" name="moodLevel" value={moodLevel} />
+            <input type="hidden" name="energyLevel" value={energyLevel} />
+            <input type="hidden" name="exerciseDays" value={3} />
+
+            {/* Buttons */}
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                type="button"
+                onClick={() => setShowLogModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: '#f0f0f0',
+                  color: '#333',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={submitLoading}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: '#8b1a1a',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  cursor: submitLoading ? 'not-allowed' : 'pointer',
+                  opacity: submitLoading ? 0.7 : 1,
+                  fontSize: '16px'
+                }}
+              >
+                {submitLoading ? '⏳ Saving...' : '💾 Log Today'}
+              </button>
+            </div>
           </form>
         </div>
       )}

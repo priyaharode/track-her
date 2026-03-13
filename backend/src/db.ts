@@ -6,8 +6,8 @@ const pool = new Pool({
   host: 'localhost',
   port: 5432,
   database: 'trackher_db',
-  user: 'trackher_user',
-  password: '12345678',
+  user: 'postgres',
+  password: 'Ujwal@12345',
 });
 
 console.log('Database Pool Created:');
